@@ -1,0 +1,78 @@
+<div *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+
+  <h2> ورود به سایت </h2>
+  <p>با ورود به سایت از مزایای کاربران سایت بهره مند شوید</p>
+
+  <div class="inner_logo">
+    <a routerLink="/">
+      <h3 class="font-weight-bold c-black">Asana</h3>
+    </a>
+    <img src="assets/media/images/svg/authentication.svg">
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input_element">
+        <i class="material-icons md-dark">email</i>
+        <input type="email" placeholder="ایمیل خود را وارد کنید" name="email" formControlName="email">
+        <span *ngIf="loginForm.get('email')?.errors?.['email'] && loginForm.get('email')?.touched">
+          ایمیل وارد
+          شده معتبر نمی باشد !</span>
+        <span *ngIf="loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched">
+          لطفا ایمیل خود را وارد کنید !
+        </span>
+      </div>
+      <div class="input_element">
+        <i class="material-icons md-dark">key</i>
+        <input type="password" placeholder="کلمه عبور" name="password" formControlName="password">
+        <span *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+          کلمه عبور معتبر نمی باشد !
+        </span>
+        <span *ngIf="loginForm.get('password')?.errors?.['minlength'] && loginForm.get('password')?.touched">
+          کلمه عبور باید حداقل 6 کارکتر باشد !
+        </span>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="checkbbox_remember">
+        <label class="label">
+          <div class="toggle">
+            <input class="toggle-state" type="checkbox" formControlName="isRemember" />
+            <div class="toggle-inner">
+              <div class="indicator"></div>
+            </div>
+            <div class="active-bg"></div>
+          </div>
+          <div class="label-text-right">مرا به خاطر بسپار</div>
+        </label>
+      </div>
+    </div>
+    <div class="login_btn col-md-12">
+      <button type="submit" [disabled]="!loginForm.valid">ورود</button>
+    </div>
+    <div class="col-md-12 my-2">
+      <small class="">با ورود به آســانا،شرایط آســانا وقوانین حریم‌خصوصی را می‌پذیرم</small>
+    </div>
+    <div class="other_ways col-md-12">
+      <div class="other_ways_inside">
+        <a href="">
+          <img class="mx-2" src="../../../../assets/media/images/logo/social-logos/google.svg" alt="">
+
+        </a>
+        <a href="">
+          <img class="mx-2" src="../../../../assets/media/images/logo/social-logos/github.svg" alt="">
+        </a>
+      </div>
+    </div>
+
+    <div class="other_link col-md-12">
+      <a routerLink="/auth/register"> <i class="icon-user-plus"></i> ثبت نام در سایت </a>
+      <a routerLink="/auth/forgot-password"><i class="icon-unlock"></i> رمز عبور خود را فراموش کرده ام
+        !</a>
+    </div>
+  </div>
+</form>

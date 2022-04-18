@@ -1,0 +1,45 @@
+<mat-card class="example-card my-3">
+  <mat-card-title>
+    <button mat-icon-button color="primary" mat-button [matMenuTriggerFor]="menu" class="float-left">
+      <mat-icon>more_horiz</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onDelete()">
+        <mat-icon>delete</mat-icon>
+        <span class="fs-12 mat-caption">حذف</span>
+      </button>
+      <button mat-menu-item (click)="onSelectDefault()">
+        <mat-icon>location_on</mat-icon>
+        <span class="mat-caption">آدرس پیش فرض</span>
+      </button>
+      <button mat-menu-item (click)="onUpdate()">
+        <mat-icon>mode_edit</mat-icon>
+        <span class="mat-caption">ویرایش</span>
+      </button>
+    </mat-menu>
+  </mat-card-title>
+  <mat-card-subtitle>
+    <mat-icon>{{address.isDefault ? 'location_on': 'location_off'}}</mat-icon>
+    <span class="font-weight-bold">{{address.stateName + ' '+ address.cityName}}</span>
+  </mat-card-subtitle>
+  <mat-card-title>
+    <p class="fs-12">{{address.fullAddress}}</p>
+  </mat-card-title>
+  <mat-card-content>
+    <mat-list dense>
+      <mat-list-item>
+        <mat-icon>mail_outline</mat-icon>
+        <span>کدپستی گیرنده : <b>{{address.postalCode}}</b></span>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon>person</mat-icon>
+        <span>مشخصات گیرنده : <b>{{address.recipientFirstName + ' ' + address.recipientLastName}}</b></span>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon>phone</mat-icon>
+        <span> شماره تلفن گیرنده : <b>{{address.recipientPhoneNumber}}</b> </span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-divider inset></mat-divider>
+</mat-card>

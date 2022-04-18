@@ -1,0 +1,28 @@
+:host {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+}
+:host.visible {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+}
+
+.sub_menu_div_back {
+  position: fixed;
+  top: 107px;
+  right: 20px;
+  left: 0px;
+  width: 96vw;
+  padding: 0px;
+  z-index: 400;
+}
+
+.sub_menu_div {
+  position: relative;
+  top: 14px;
+  right: 0px;
+  width: 100%;
+  z-index: 300;
+}

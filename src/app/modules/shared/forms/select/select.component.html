@@ -1,0 +1,36 @@
+<div id="product-category-select" class="select-container" appFormSelect>
+  <div class="c-select">
+
+    <label class="select-lable text-right d-block">{{labelKey}}</label>
+
+    <div class="selected" id="selected-btn" [ngClass]="{'open':isOpen}" (click)="open(optionsTpl,appended)" #origin>
+
+      <span class="selected-labal">{{lable}}</span>
+      <span class="selected-icon">
+        <i class="material-icons">{{isOpen ? 'keyboard_arrow_up':'keyboard_arrow_down'}}</i>
+      </span>
+
+    </div>
+    <div #appended>
+
+    </div>
+    <ng-template #optionsTpl>
+      <div class="select-box">
+
+        <input type="text" [formControl]="searchConroller" autofocus placeholder="جستجو...">
+
+        <span *ngIf="!options.length" class="d-block p-2 text-right font-weight-bold">موردی یافت نشد</span>
+        <div class="option-container">
+
+          <ng-container *ngFor="let optionItem of options">
+
+            <app-option [option]="optionItem" (optionSelected)="selectOption($event)"></app-option>
+
+          </ng-container>
+
+        </div>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

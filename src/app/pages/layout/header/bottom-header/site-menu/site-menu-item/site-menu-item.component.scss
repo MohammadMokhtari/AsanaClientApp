@@ -1,0 +1,51 @@
+@import "bootstrap-v4-rtl/scss/functions";
+@import "bootstrap-v4-rtl/scss/mixins";
+@import "bootstrap-v4-rtl/scss/variables";
+
+.menu_item {
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-left: 0.5px solid #d6d6d654;
+  position: relative;
+  cursor: pointer;
+  margin-right: 0px;
+  transition: all 0.2s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    height: 0.1em;
+    width: 0%;
+    top: 0px;
+    left: 0;
+    right: 0;
+    background-color: #000;
+    transition: all 0.1s ease-in;
+  }
+
+  &:hover::after {
+    width: 100%;
+    margin: auto;
+    text-decoration: none;
+    transition: width 0.3s ease;
+  }
+
+  @include media-breakpoint-up(lg) {
+    display: inline-block;
+    margin-left: 12px;
+  }
+  @include media-breakpoint-up(xl) {
+    margin-left: 18px;
+  }
+}
+
+:host::ng-deep .menu_link {
+  color: #000;
+  font-size: 11px;
+}
+
+:host-context(.backdrop).visible {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}

@@ -1,0 +1,172 @@
+<mat-dialog-content dir="rtl">
+  <form (ngSubmit)="onSubmit()" [formGroup]="addressForm">
+    <div class="form_wrapper border-0">
+      <div class="addres-form-cantainer">
+        <div class="row">
+          <div class="form-title col-md-12">
+            <span class="material-icons icon-sm icon-4c text-muted">location_on</span>
+            افزودن آدرس
+          </div>
+        </div>
+        <div style="max-width: 0; max-height: 0; opacity: 0; overflow: hidden;">
+          <input autofocus="true" />
+        </div>
+        <div class="form-subtitle col-md-12 fs-11">جزئیات آدرس را با
+          دقت
+          وارد کنید</div>
+        <ng-template [ngIf]="isEditMode">
+          <div class="row" *ngIf="(provinceOptionSelected && cityOptionsSelected) ">
+            <div class="col-md-6">
+              <app-select [options]="provinceOptions" [model]="provinceOptionSelected" labelKey="* استان"
+                [subSelect]="selectCity" (optionChanges)="optionProvinceSelect($event)">
+              </app-select>
+            </div>
+            <div class="col-md-6">
+              <app-select [options]="CityOptions" [model]="cityOptionsSelected" labelKey="* شهر" #selectCity
+                (optionChanges)="optionCitySelect($event)">
+              </app-select>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="!isEditMode">
+          <div class="row">
+            <div class="col-md-6">
+              <app-select [options]="provinceOptions" [model]="provinceOptionSelected" labelKey="* استان"
+                [subSelect]="selectCity" (optionChanges)="optionProvinceSelect($event)">
+              </app-select>
+            </div>
+            <div class="col-md-6">
+              <app-select [options]="CityOptions" [model]="cityOptionsSelected" labelKey="* شهر" #selectCity
+                (optionChanges)="optionCitySelect($event)">
+              </app-select>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="user-input">
+              <label>
+                <span class="c-red">*</span> نشانی پستی</label>
+              <input type="text" formControlName="addressLine">
+              <small class="user-input-error-dialog"
+                *ngIf="addressForm.get('addressLine')?.errors?.['required'] && addressForm.get('addressLine')?.touched">
+                نشانی پستی را وارد کنید !
+              </small>
+              <small class="user-input-error-dialog"
+                *ngIf="addressForm.get('addressLine')?.errors?.['minlength'] && addressForm.get('addressLine')?.touched">
+                آدرس پستی باید حداقل 5 کارکتر باشد !
+              </small>
+              <small class="user-input-error-dialog"
+                *ngIf="addressForm.get('addressLine')?.errors?.['maxlength'] && addressForm.get('addressLine')?.touched">
+                آدرس پستی باید حداکثر 120 کارکتر باشد !
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="user-input">
+              <label>
+                <span class="c-red">*</span>
+                کد پستی
+              </label>
+              <input type="text" formControlName="postalCode">
+              <label class="user-input-desc"
+                [ngClass]="{'c-red font-weight-bold':!addressForm.get('postalCode')?.valid && addressForm.get('postalCode')?.touched}">کدپستی
+                باید 10 رقم و بدون خط تیره باشد</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="user-input">
+              <label>
+                <span class="c-red">*</span>
+                پلاک
+              </label>
+              <input type="text" formControlName="numberPlate">
+              <small class="user-input-error-dialog"
+                *ngIf="!addressForm.get('numberPlate')?.valid && addressForm.get('numberPlate')?.touched">
+                شماره پلاک وارد شده معتبر نمی باشد
+              </small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="user-input">
+              <label>واحد</label>
+              <input type="text" formControlName="unitNumber">
+              <small class="user-input-error-dialog"
+                *ngIf="!addressForm.get('unitNumber')?.valid && addressForm.get('unitNumber')?.touched">
+                مقدار وارد شده معتبر نمی باشد
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="addres-form-cantainer" formGroupName="recipentData">
+        <div class="row">
+          <div class="form-title col-md-12">مشخصات گیرنده سفارش</div>
+          <div class="form-subtitle col-md-12">.لطفا مشخضات گیرنده را با دقت
+            وارد کنید</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="user-input">
+              <label>
+                <span class="c-red">*</span>
+                نام گیرنده</label>
+              <input type="text" formControlName="recipientFirstName">
+              <small class="user-input-error-dialog"
+                *ngIf="!addressForm.get('recipentData.recipientFirstName')?.valid && addressForm.get('recipentData.recipientFirstName')?.touched">
+                مقدار وارد شده معتبر نمی باشد
+              </small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="user-input">
+              <label>
+                <span class="c-red">*</span>
+                نام خانوادگی گیرنده </label>
+              <input type="text" formControlName="recipientLastName">
+              <small class="user-input-error-dialog"
+                *ngIf="!addressForm.get('recipentData.recipientLastName')?.valid && addressForm.get('recipentData.recipientLastName')?.touched">
+                مقدار وارد شده معتبر نمی باشد
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="user-input">
+              <label>
+                <span class="c-red">*</span>
+                کدملی گیرنده</label>
+              <input type="text" formControlName="recipientNationalCode">
+              <label class="user-input-desc"
+                [ngClass]="{'c-red font-weight-bold':!addressForm.get('recipentData.recipientNationalCode')?.valid && addressForm.get('recipentData.recipientNationalCode')?.touched}">کدملی
+                باید 10 رقم و بدون خط تیره باشد</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="user-input">
+              <label>
+                <span class="c-red">*</span>
+                شماره تماس گیرنده</label>
+              <input type="text" formControlName="recipientPhoneNumber" dir="ltr">
+              <small class="user-input-error-dialog"
+                *ngIf="!addressForm.get('recipentData.recipientPhoneNumber')?.valid && addressForm.get('recipentData.recipientPhoneNumber')?.touched">
+                شماره وارد شده معتبر نمی باشد
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="d-flex justify-content-end w-100 px-1">
+            <button class="base-btn custom-btn-success mr-3" type="submit" [disabled]="!addressForm.valid">
+              {{isEditMode ? 'ویرایش':'افزودن'}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

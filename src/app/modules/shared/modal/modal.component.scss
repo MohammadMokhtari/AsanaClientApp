@@ -1,0 +1,78 @@
+@import "bootstrap-v4-rtl/scss/functions";
+@import "bootstrap-v4-rtl/scss/mixins";
+@import "bootstrap-v4-rtl/scss/variables";
+
+.re-modal-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.411);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 900;
+  opacity: 1;
+  transform: scale(1.1, 1.1);
+  // @include transition(all 0.2s ease-in-out);
+}
+
+.re-modal {
+  max-width: 1000px;
+  width: auto;
+  padding: 5px 10px;
+  position: relative;
+  background-color: #fff;
+  border-radius: 5px;
+  &-header {
+    width: 100%;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(88, 88, 88, 0.192);
+    &-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .close-modal-btn {
+      cursor: pointer;
+      > i {
+        color: black;
+        font-size: 20px;
+        &:hover {
+          color: #f1416c;
+        }
+      }
+    }
+  }
+  &-bottom {
+    padding: 15px;
+    #modal-location-user-address {
+      li {
+        text-align: right;
+        font-size: 14px;
+      }
+    }
+  }
+  .re-modal-content {
+    overflow: hidden;
+    @include media-breakpoint-up(lg) {
+      max-width: 1200px;
+      max-height: 90vh;
+    }
+    @include media-breakpoint-down(md) {
+      max-width: 700px;
+      max-height: 90vh;
+    }
+    @include media-breakpoint-down(sm) {
+      max-width: 500px;
+      max-height: 90vh;
+    }
+    @include media-breakpoint-down(xs) {
+      max-width: 400px;
+      max-height: 90vh;
+    }
+  }
+}
