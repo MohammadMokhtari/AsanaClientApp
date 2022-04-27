@@ -1,0 +1,20 @@
+<li class="menu_item" (mouseenter)="onMouseEnterHandler()" (mouseleave)="onMouseLeaveHandler($event)"
+  [ngClass]="{'select':isActive}">
+  <a class="menu_link" [ngClass]="{'blue':isActive}">
+    <!-- <span class="icon-menu-svg">
+      <img [src]="'assets/media/images/svg/icon/menu/'+  navigationCategory.name">
+    </span> -->
+    {{navigationCategory.name}}
+  </a>
+  <div id="first_sub_menu_item_divi" class="sub_menu_item_divi" [ngClass]="{'visible':isActive}">
+    <div class=" h-100 sub_menu_item_divi_row">
+      <div class="sub_menu_item_divi_left">
+        <ul class="sub_categori">
+          <ng-container *ngFor="let category of navigationCategory.childCategories">
+            <app-mega-sub-menu-item [navigationCategory]="category"></app-mega-sub-menu-item>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </div>
+</li>

@@ -1,0 +1,7 @@
+<ul class="menu">
+  <ng-container *ngFor="let category of (categoriesNavigation$ | async) index as i">
+    <app-mega-menu-item appNavbarItem [isActive]="i == 0" (itemSelected)="deActiveAllItems()"
+      [navigationCategory]="category">
+    </app-mega-menu-item>
+  </ng-container>
+</ul>

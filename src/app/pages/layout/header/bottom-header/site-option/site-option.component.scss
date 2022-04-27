@@ -1,0 +1,35 @@
+@import "bootstrap-v4-rtl/scss/functions";
+@import "bootstrap-v4-rtl/scss/mixins";
+@import "bootstrap-v4-rtl/scss/variables";
+.site_options {
+  display: inline-block;
+  margin: 0px auto 0px 0px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  > li {
+    display: inline-block;
+    margin-right: 15px;
+    margin-left: 5px;
+
+    @include media-breakpoint-up(lg) {
+      margin-right: 25px;
+      margin-left: 10px;
+    }
+  }
+  .menu_item_count {
+    position: absolute;
+    top: 0px;
+    border-top: 0.5px solid #000;
+    border-radius: 50px;
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
+  font-size: 11px;
+}
+.item {
+  cursor: pointer;
+}

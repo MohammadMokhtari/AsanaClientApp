@@ -1,0 +1,20 @@
+<ng-template #modal>
+
+  <div class="re-modal-content">
+    <div class="re-modal ">
+      <div class="re-modal-header">
+        <div class="re-modal-header-title">
+          {{modalConfig.headerTitle}}
+        </div>
+        <div class="close-modal-btn" (click)="close()">
+          <i class="material-icons">close</i>
+        </div>
+      </div>
+      <div class="re-modal-content">
+        <ng-content></ng-content>
+
+      </div>
+    </div>
+  </div>
+
+</ng-template>

@@ -1,0 +1,78 @@
+<div class="access_menu">
+  <ul>
+
+    <li routerLink="edit" [routerLink]="['/account']" routerLinkActive="active"
+      [routerLinkActiveOptions]="{'exact':true}">
+      <a>
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/Info-circle1.svg">
+        </span>
+        اطلاعات حساب کاربری
+      </a>
+    </li>
+
+    <li routerLink="edit" routerLinkActive="active">
+      <a>
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/Settings.svg">
+        </span>
+        ویرایش
+      </a>
+    </li>
+
+    <li routerLink="address" routerLinkActive="active">
+      <a>
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/Marker1.svg">
+        </span>
+        آدرس ها
+      </a>
+    </li>
+
+    <li routerLink="wallet" routerLinkActive="active">
+      <a>
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/Wallet3.svg">
+        </span>
+        کیف پول
+      </a>
+    </li>
+
+    <li routerLink="orders" routerLinkActive="active">
+      <a>
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/fin005.svg">
+        </span>
+        فاکتورها
+      </a>
+    </li>
+
+    <li routerLink="reset-password" routerLinkActive="active">
+      <a>
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/Lock-overturning.svg">
+        </span>
+        ویرایش کلمه عبور
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="comments" routerLinkActive="active">
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/Comment.svg">
+        </span>
+        نظرات من
+      </a>
+    </li>
+
+    <li class="border-top" (click)="signOut()">
+      <a>
+        <span class="icon-menu-svg">
+          <img src="assets/media/images/svg/icon/menu/Sign-Out.svg">
+        </span>
+        خروج از حساب کاربری
+      </a>
+    </li>
+
+  </ul>
+</div>

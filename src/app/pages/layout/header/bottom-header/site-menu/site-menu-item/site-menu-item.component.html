@@ -1,0 +1,9 @@
+<li class="menu_item" (mouseenter)="onMouseEnterHandler()" (mouseleave)="onMouseLeaveHandler()">
+
+  <ng-content></ng-content>
+
+  <app-sub-menu id="sub" [ngClass]="{'visible': isOpen}">
+    <ng-content select="#sub-menu"></ng-content>
+  </app-sub-menu>
+
+</li>

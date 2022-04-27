@@ -1,0 +1,9 @@
+.fixeded {
+  position: fixed;
+}
+
+.open_sub_menu_item {
+  display: block !important;
+  opacity: 1 !important;
+  @include transition(all 0.3s);
+}

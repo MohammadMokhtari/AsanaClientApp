@@ -1,0 +1,15 @@
+header {
+  z-index: 800;
+  width: 100%;
+  position: fixed;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  width: 100%;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-top: 20px;
+}

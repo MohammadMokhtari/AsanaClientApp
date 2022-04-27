@@ -1,0 +1,97 @@
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<div class="input_layer_addresss pt-3">
+  <div class="row acount_title">
+    <div class="form-title col-md-12 fs-13">
+      <span class="text-muted mx-2 font-weight-bold"> ویرایش اطلاعات</span>
+    </div>
+  </div>
+</div>
+
+<ng-template [ngIf]="!isLoading">
+
+  <div class="container">
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="accountEditForm">
+      <div class=" row form_wrapper p-2">
+        <div class="col-md-12 ">
+          <div class="form-cantainer">
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="user-input">
+                  <label>نام</label>
+                  <input type="text" formControlName="firstName">
+                  <span *ngIf="!accountEditForm.get('firstName')?.valid && accountEditForm.get('firstName')?.touched">
+                    <small class="c-red fs-14 font-weight-bold">*</small> ورودی بیشتر از حد مجاز می باشد.
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="user-input">
+                  <label> نام خانوادگی</label>
+                  <input type="text" formControlName="lastName">
+                  <span *ngIf="!accountEditForm.get('lastName')?.valid && accountEditForm.get('lastName')?.touched">
+                    <small class="c-red fs-12 font-weight-bold">*</small> ورودی بیشتر از حد مجاز می باشد.
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="user-input">
+                  <label>* شماره کارت بانکی</label>
+                  <input type="text" formControlName="creditCardNumber">
+                  <label class="user-input-desc"
+                    [ngClass]="{'c-red':!accountEditForm.get('creditCardNumber')?.valid && accountEditForm.get('creditCardNumber')?.touched}">شماره
+                    کارت باید 16 رقم و بدون فاصله باشد</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <app-select [options]="genderOptions" labelKey="جنسیت" (optionChanges)="optionSelect($event)">
+                </app-select>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="user-input">
+                  <label> کد ملی</label>
+                  <input type="text" formControlName="nationalCode">
+                  <label class="user-input-desc"
+                    [ngClass]="{'c-red':!accountEditForm.get('nationalCode')?.valid && accountEditForm.get('nationalCode')?.touched}">کدملی
+                    باید 10 رقم و بدون خط تیره باشد</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="user-input">
+                  <label>تلفن همراه</label>
+                  <input dir="ltr" type="text" formControlName="phoneNumber">
+                  <span
+                    *ngIf="!accountEditForm.get('phoneNumber')?.valid && accountEditForm.get('phoneNumber')?.touched">
+                    <small class="c-red fs-12 font-weight-bold">*</small> شماره وارد شده معتبر نمی باشد.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="py-3 d-flex justify-content-end">
+            <button class="base-btn mr-3" type="button" (click)="onCancel()">انصراف</button>
+            <button class="base-btn custom-btn-primary mr-3" [disabled]="!accountEditForm.valid"
+              type="submit">ویرایش</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+</ng-template>

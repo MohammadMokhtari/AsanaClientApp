@@ -1,0 +1,43 @@
+<section class="offers_banner">
+  <section class="container-fluid">
+
+    <section class="account">
+      <div class="row page_row">
+        <div class="col-lg-3">
+          <div class="account_dashboard bg-white shadow-box rounded-15">
+            <div class="headline">
+              <div class="d-flex align-items-center justify-content-center">
+                <!-- <img [src]="User.photoUrl" alt=""> -->
+                <app-file-upload [url]="User.photoUrl"></app-file-upload>
+                <div class="profile__info">
+                  <div class="profile__info_score">
+                    <span class="font-weight-bold fs-13">
+                      {{User.fullName}}
+                    </span>
+                  </div>
+                  <div class="profile__info_wallet_balance">
+                    <span>
+                      <i class="material-icons-outlined icon-sm icon-c">account_balance_wallet</i>
+                      کیف پول :
+                    </span>
+                    <small>{{User.walletBalance}}<span> تومان</span></small>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center align-content-center">
+                <span class="fs-13 text-muted font-weight-bold mb-3 mt-5 ">{{User.userName}}</span>
+              </div>
+            </div>
+            <app-account-acceess-menu></app-account-acceess-menu>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="bg-white border rounded-15 shadow-box position-relative route-holder"
+            [@routAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
+            <router-outlet #outlet="outlet"></router-outlet>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+</section>

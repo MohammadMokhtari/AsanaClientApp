@@ -1,0 +1,83 @@
+<div *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="registrationForm">
+
+  <h2> ثبت نام سایت </h2>
+  <p>با ثبت نام در سایت از مزایای کاربران سایت بهره مند شوید</p>
+
+  <div class="inner_logo">
+    <a routerLink="/">
+      <h3 class="font-weight-bold c-black">Asana</h3>
+    </a>
+    <img src="assets/media/images/svg/auth.svg">
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="input_element">
+        <i class="material-icons"> mail </i>
+        <input type="email" placeholder="ایمیل خود را وارد کنید" name="email" formControlName="email">
+
+        <span *ngIf="registrationForm.get('email')?.errors?.['email'] && registrationForm.get('email')?.touched">
+          ایمیل وارد
+          شده معتبر نمی باشد !</span>
+        <span *ngIf="registrationForm.get('email')?.errors?.['required'] && registrationForm.get('email')?.touched">
+          لطفا ایمیل خود را وارد کنید !
+        </span>
+      </div>
+
+      <div class="input_element">
+        <i class="material-icons"> key </i>
+        <input type="password" placeholder="کلمه عبور" name="password" formControlName="password">
+        <span
+          *ngIf="registrationForm.get('password')?.errors?.['required'] && registrationForm.get('password')?.touched">
+          کلمه عبور معتبر نمی باشد !
+        </span>
+        <span
+          *ngIf="registrationForm.get('password')?.errors?.['minlength'] && registrationForm.get('password')?.touched">
+          کلمه عبور باید حداقل 6 کارکتر باشد !
+        </span>
+      </div>
+
+      <div class="input_element">
+        <i class="material-icons"> key </i>
+        <input type="password" placeholder="تکرار کلمه عبور" name="confirmPassword" formControlName="confirmPassword">
+        <span *ngIf="registrationForm.errors?.notEqual && registrationForm.get('confirmPassword')?.touched">
+          کلمه های عبور یکسان نمی باشند !
+        </span>
+      </div>
+
+    </div>
+
+    <div class="login_btn col-md-12">
+      <button type="submit" class="btn" [disabled]="!registrationForm.valid">ثبت‌ نام</button>
+    </div>
+    <div class="col-md-12 my-2">
+      <small class="">با ثبت نام در آســانا،شرایط آســانا وقوانین حریم‌خصوصی را می‌پذیرم</small>
+    </div>
+    <div class="other_ways col-md-12">
+      <div class="other_ways_inside">
+        <a href="">
+          <img class="mx-2" src="../../../../assets/media/images/logo/social-logos/google.svg" alt="">
+        </a>
+        <a href="">
+          <img class="mx-2" src="../../../../assets/media/images/logo/social-logos/github.svg" alt="">
+        </a>
+      </div>
+    </div>
+
+    <div class="other_link col-md-12">
+      <a routerLink="/auth">
+        <i class="icon-user-plus"></i>
+        ورود به سایت
+      </a>
+      <a routerLink="/auth/forgot-password">
+        <i class="icon-unlock"></i>
+        رمز عبور خود را فراموش کرده ام!
+      </a>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,14 @@
+<div class="user_area">
+
+  <div class="logged_out" *ngIf="!isAuthenticated">
+    <span class="icon-menu-svg">
+      <img [src]="'assets/media/images/svg/icon/menu/Sign-in.svg'">
+    </span>
+    <a routerLink="auth">ورود</a>
+    <span>/</span>
+    <a routerLink="auth/register">ثبت نام</a>
+  </div>
+
+  <app-profile [user]="user!" *ngIf="isAuthenticated"></app-profile>
+
+</div>

@@ -1,0 +1,22 @@
+<app-modal #modal [modalConfig]="modalConfig">
+  <div class="re-modal-content-body">
+    <ng-container *ngIf="locations">
+      <ul>
+        <ng-container *ngFor="let location of locations">
+          <app-user-location-item [location]="location" (onSelectEvent)="selectItem($event)">
+          </app-user-location-item>
+        </ng-container>
+      </ul>
+    </ng-container>
+
+  </div>
+  <div class="re-modal-content-option">
+    <button class="custom-btn custom-btn-primary">
+      <i class="material-icons-outlined icon-sm icon-c">add</i>
+      افزودن آدرس
+      جدید
+    </button>
+  </div>
+</app-modal>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

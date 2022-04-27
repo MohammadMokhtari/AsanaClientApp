@@ -1,0 +1,38 @@
+@import "bootstrap-v4-rtl/scss/functions";
+@import "bootstrap-v4-rtl/scss/mixins";
+@import "bootstrap-v4-rtl/scss/variables";
+
+.header_section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 65px;
+  padding: 0 5px;
+  background-color: #fff;
+  position: fixed;
+  right: 0px;
+  z-index: 10;
+  top: 0px;
+
+  @include media-breakpoint-up(sm) {
+    padding: 0px 15px;
+  }
+  @include media-breakpoint-up(lg) {
+    padding: 5px 20px;
+  }
+  @include media-breakpoint-up(xl) {
+    padding: 5px 15px;
+  }
+}
+.site_logo {
+  padding-top: 10px;
+  a {
+    position: relative;
+    text-decoration: none;
+    img {
+      height: 35px;
+      width: 115px;
+    }
+  }
+}

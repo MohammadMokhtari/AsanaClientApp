@@ -1,0 +1,7 @@
+<app-header></app-header>
+
+<main>
+  <section class="site_section" [@routAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </section>
+</main>

@@ -1,0 +1,26 @@
+.footer_bottom {
+  padding: 25px;
+  .about {
+    text-align: right;
+    &_footer_title {
+      font-size: 15px;
+      text-align: right;
+      color: #000;
+      font-family: YekanBold;
+      font-weight: 800;
+
+      > i {
+        position: relative;
+        top: 5px;
+        font-size: 20px;
+      }
+    }
+    p {
+      color: #000000de;
+      font-size: 13px;
+      line-height: 24px;
+      margin: 0px;
+      text-align: justify;
+    }
+  }
+}

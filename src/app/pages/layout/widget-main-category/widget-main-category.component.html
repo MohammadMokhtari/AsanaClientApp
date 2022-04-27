@@ -1,0 +1,23 @@
+<section class="cat_products">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-around flex-wrap flex-lg-nowrap">
+
+      <ng-container *ngFor="let mainCategory of (mainCategories$ | async)">
+        <div class="cat__products_item  bg-white rounded-15 py-4 px-4 d-flex align-items-center muted-border">
+          <div class="d-flex justify-content-center align-items-center flex-column">
+            <div class="cat__products_item">
+              <img [src]="mainCategory.mediaFile.url" [alt]="mainCategory.mediaFile.alt">
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-center py-2">
+              <h6 class="text-muted font-weight-bold text-center fs-12">{{mainCategory.name}}</h6>
+              <a href="" class="text-muted">مشاهد <span class="material-icons-outlined icon-xs icon-4c">
+                  chevron_left
+                </span></a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</section>

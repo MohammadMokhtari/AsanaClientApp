@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "./assets/sass/style.scss";
+
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@import "~@angular/material/theming";
+
+// Define a custom typography config that overrides the font-family as well as the
+// `headlines` and `body-1` levels.
+$custom-typography: mat-typography-config(
+  $font-family: "Roboto, monospace ,IRANSans",
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500),
+);
+@include mat-core($custom-typography);
+
+.mat-list-item-content {
+  padding: 0;
+}
+// .cdk-overlay-pane {
+//   height: 95%;
+// }
+.mat-dialog-content {
+  max-height: 85vh !important;
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+body::-webkit-scrollbar-track {
+  background-color: rgb(255, 255, 255);
+  border-radius: 2px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #c9c9c9d8;
+  border-radius: 2px;
+}
