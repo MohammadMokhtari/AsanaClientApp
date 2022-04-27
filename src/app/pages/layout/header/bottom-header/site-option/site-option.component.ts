@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { AddressService } from './user-location/service/address.service';
 import { UserLocationComponent } from './user-location/user-location.component';
-import { Address } from './user-location/address.model';
+import { Address } from '../../../../../modules/account/account-address/model/address.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { AddressServices } from 'src/app/modules/account/account-address/services/address.service';
 
 @Component({
   selector: 'app-site-option',
@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 })
 export class SiteOptionComponent implements OnInit, OnDestroy {
   constructor(
-    private addressService: AddressService,
+    private addressService: AddressServices,
     private authService: AuthService
   ) {}
 
@@ -43,7 +43,7 @@ export class SiteOptionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.userSub?.unsubscribe();
-    // this.locationSub?.unsubscribe();
+    this.userSub?.unsubscribe();
+    this.locationSub?.unsubscribe();
   }
 }

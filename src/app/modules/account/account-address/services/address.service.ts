@@ -1,31 +1,41 @@
-import { AddressCreatedModel } from './../../../../../../../modules/account/account-address/model/addressCreateModel';
+import { ResponseJsonStatus } from './../../../shared/models/ResponseJsonStatus';
+import { AddressCreatedModel } from './../model/addressCreateModel';
+import { tap, catchError, shareReplay, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Subject, Observable, throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { Subject, BehaviorSubject, Observable, throwError } from 'rxjs';
 
-import { ResponseJsonStatus } from '@shared-module/models/ResponseJsonStatus';
-import { Address } from '../address.model';
 import { StorageService } from '@shared-module/services/storage.service';
+import { Address } from 'src/app/modules/account/account-address/model/address.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AddressService {
+export class AddressServices {
   constructor(
     private http: HttpClient,
     private storageService: StorageService
   ) {}
 
-  public addressChanged = new Subject<Address[]>();
+  private addresses: Address[] = [];
+
+  private addressesObs: Observable<Address[]> | null;
+
+  public addressesChanged = new Subject<Address[]>();
 
   public editStarting = new Subject<Address | null>();
 
   public defaultAddress = new BehaviorSubject<Address | null>(null);
 
-  private addresses: Address[] = [];
-
   public getAddresses() {
+    if (this.addressesObs) {
+      return this.addressesObs;
+    }
+    this.addressesObs = this.fetchAddress();
+    return this.addressesObs;
+  }
+
+  public AllAddresses() {
     return this.addresses.slice();
   }
 
@@ -38,24 +48,16 @@ export class AddressService {
         catchError(this.handleError),
         tap((data) => {
           this.SetDefaultAddress(data.data);
-          this.updateAddresses(data.data.id);
         })
       );
   }
 
-  public fetchAddress() {
-    return this.http.get<ResponseJsonStatus<Address[]>>('address').pipe(
-      tap((data) => {
-        catchError(this.handleError), this.setAddresses(data.data);
-      })
-    );
-  }
-
   public createAddress(address: AddressCreatedModel) {
-    return this.http.post('address/create', address).pipe(
+    return this.http.post('address', address).pipe(
       catchError(this.handleError),
       tap((_) => {
-        this.fetchAddress().subscribe();
+        this.addressesObs = null;
+        this.getAddresses().subscribe();
       })
     );
   }
@@ -64,8 +66,22 @@ export class AddressService {
     return this.http.put('address/update', address).pipe(
       catchError(this.handleError),
       tap((_) => {
-        this.fetchAddress().subscribe();
+        this.addressesObs = null;
+        this.getAddresses().subscribe();
       })
+    );
+  }
+
+  private fetchAddress(): Observable<Address[]> {
+    return this.http.get<ResponseJsonStatus<Address[]>>('address').pipe(
+      map((response) => {
+        return response.data;
+      }),
+      catchError(this.handleError),
+      tap((data) => {
+        this.setAddresses(data);
+      }),
+      shareReplay()
     );
   }
 
@@ -73,7 +89,10 @@ export class AddressService {
     return this.http.delete(`address/delete/${addressId}`).pipe(
       catchError(this.handleError),
       tap((_) => {
-        this.fetchAddress().subscribe();
+        this.addressesObs = null;
+        this.getAddresses().subscribe((addresses) => {
+          this.changeDefaultAddress(addresses[0].id).subscribe();
+        });
       })
     );
   }
@@ -85,14 +104,14 @@ export class AddressService {
   public SetDefaultAddress(address: Address) {
     if (address) {
       this.defaultAddress.next(address);
-      this.storageService.writeAddress(address);
+      this.storageService.writeDefaultAddress(address);
       this.updateAddresses(address.id);
+      return;
     }
   }
 
   public autoSetDefaultAddress(): void {
-    this.fetchAddress().subscribe();
-    const address = this.storageService.readAddress();
+    const address = this.storageService.readDefaultAddress();
     if (address) {
       this.SetDefaultAddress(address);
     }
@@ -100,18 +119,26 @@ export class AddressService {
 
   private setAddresses(addresses: Address[]): void {
     this.addresses = addresses;
-    this.addressChanged.next(this.addresses.slice());
+    this.addressesChanged.next(this.addresses.slice());
   }
 
-  private updateAddresses(addressId: string): void {
+  private updateAddresses(addressId: string = ''): void {
     this.addresses.forEach((address) => (address.isDefault = false));
 
-    const address = this.addresses.find((address) => {
-      return address.id === addressId;
-    });
+    if (addressId) {
+      const address = this.addresses.find((address) => {
+        return address.id === addressId;
+      });
 
-    if (address) {
-      address.isDefault = true;
+      if (address) {
+        address.isDefault = true;
+        this.setAddresses(this.addresses);
+        return;
+      }
+    }
+    if (this.addresses.length > 0) {
+      this.addresses[0].isDefault = true;
+      this.SetDefaultAddress(this.addresses[0]);
       this.setAddresses(this.addresses);
     }
   }

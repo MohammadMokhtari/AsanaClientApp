@@ -1,4 +1,4 @@
-import { Address } from '../../../pages/layout/header/bottom-header/site-option/user-location/address.model';
+import { Address } from '../account-address/model/address.model';
 
 export class AccountModel {
   constructor(

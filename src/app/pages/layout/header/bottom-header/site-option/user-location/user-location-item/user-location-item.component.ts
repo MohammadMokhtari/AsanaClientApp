@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { Address } from '../address.model';
+import { Address } from '../../../../../../../modules/account/account-address/model/address.model';
 
 @Component({
   selector: 'app-user-location-item',

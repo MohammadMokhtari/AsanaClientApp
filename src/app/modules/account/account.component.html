@@ -32,8 +32,9 @@
           </div>
         </div>
         <div class="col-lg-9">
-          <div class="bg-white border rounded-15 shadow-box">
-            <router-outlet></router-outlet>
+          <div class="bg-white border rounded-15 shadow-box position-relative route-holder"
+            [@routAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
+            <router-outlet #outlet="outlet"></router-outlet>
           </div>
         </div>
       </div>

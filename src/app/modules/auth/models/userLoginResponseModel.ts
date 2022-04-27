@@ -1,5 +1,6 @@
 export class UserLoginResponseModel {
   token: string;
+  refreshToken: string;
   userId: string;
   userName: string;
   firstName: string;

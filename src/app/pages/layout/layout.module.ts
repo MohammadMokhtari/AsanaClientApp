@@ -31,6 +31,7 @@ import { UserLocationComponent } from './header/bottom-header/site-option/user-l
 import { UserLocationItemComponent } from './header/bottom-header/site-option/user-location/user-location-item/user-location-item.component';
 import { HomeComponent } from './home/home.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { MegaSubMenuItemComponent } from './header/bottom-header/site-menu/mega-menu/mega-menu-item/mega-sub-menu-item/mega-sub-menu-item..cmponent';
 @NgModule({
   declarations: [
     LayoutComponent,
@@ -44,6 +45,7 @@ import { MatMenuModule } from '@angular/material/menu';
     SiteMenuItemComponent,
     SubMenuComponent,
     MegaMenuComponent,
+    MegaSubMenuItemComponent,
     backdropDirective,
     MegaMenuItemComponent,
     ProfileComponent,

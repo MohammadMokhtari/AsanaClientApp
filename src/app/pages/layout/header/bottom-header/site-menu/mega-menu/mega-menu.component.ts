@@ -1,11 +1,8 @@
-import {
-  Component,
-  OnInit,
-  ViewChildren,
-  ElementRef,
-  QueryList,
-} from '@angular/core';
+import { LayoutService } from './../../../../services/layout.service';
+import { CategoriesNavigationResponseModel } from './models/categoriesNavigationResponseModel';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { MegaMenuItemComponent } from './mega-menu-item/mega-menu-item.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-mega-menu',
@@ -13,9 +10,13 @@ import { MegaMenuItemComponent } from './mega-menu-item/mega-menu-item.component
   styleUrls: ['./mega-menu.component.scss'],
 })
 export class MegaMenuComponent implements OnInit {
-  constructor() {}
+  constructor(private layoutService: LayoutService) {}
 
-  ngOnInit(): void {}
+  categoriesNavigation$: Observable<CategoriesNavigationResponseModel[]>;
+
+  ngOnInit(): void {
+    this.categoriesNavigation$ = this.layoutService.getCategoriesNavgationObs();
+  }
 
   @ViewChildren(MegaMenuItemComponent) items: QueryList<MegaMenuItemComponent>;
 

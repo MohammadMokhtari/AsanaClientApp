@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CategoriesNavigationResponseModel } from './../models/categoriesNavigationResponseModel';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-mega-menu-item',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class MegaMenuItemComponent {
   constructor() {}
-  name: string = 'کالای دیجیتال';
+  @Input() navigationCategory: CategoriesNavigationResponseModel;
   icon: string = 'digital.svg';
 
   @Output() itemSelected = new EventEmitter();

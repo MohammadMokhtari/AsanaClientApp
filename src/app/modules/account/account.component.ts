@@ -1,3 +1,4 @@
+import { routeAnimation } from './../../animations/routeAnimation';
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -9,6 +10,7 @@ import { AccountService } from './services/account.service';
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
+  animations: [routeAnimation],
 })
 export class AccountComponent implements OnInit, OnDestroy {
   constructor(

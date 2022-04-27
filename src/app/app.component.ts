@@ -1,6 +1,6 @@
-import { AddressService } from 'src/app/pages/layout/header/bottom-header/site-option/user-location/service/address.service';
 import { AuthService } from './modules/auth/services/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { AddressServices } from './modules/account/account-address/services/address.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   constructor(
     private authService: AuthService,
-    private addressService: AddressService
+    private addressService: AddressServices
   ) {}
 
   ngOnInit(): void {

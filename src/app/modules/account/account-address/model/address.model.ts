@@ -6,7 +6,7 @@ export class Address {
     public numberPlate: string,
     public unitNumber: string,
     public cityName: string,
-    public stateName: string,
+    public provinceName: string,
     public fullAddress: string,
     public isDefault: boolean,
     public recipientFirstName: string,

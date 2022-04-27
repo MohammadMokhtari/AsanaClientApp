@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      isRemember: new FormControl(false),
     });
   }
 
@@ -31,8 +30,7 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     const loginModel = new LoginModel(
       this.loginForm.controls.email.value,
-      this.loginForm.controls.password.value,
-      this.loginForm.controls.isRemember.value
+      this.loginForm.controls.password.value
     );
 
     this.authService.loginUser(loginModel).subscribe(

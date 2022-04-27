@@ -1,7 +1,6 @@
-import { UserLoginResponseModel } from './../models/userLoginResponseModel';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, take } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import {
@@ -18,7 +17,10 @@ import { StorageService } from '@shared-module/services/storage.service';
 import { ResetPasswordModel } from './../models/resetPasswordModel';
 import { ForgotPasswordModel } from './../models/forgotPasswordModel';
 import { ResponseJsonStatus } from '../../shared/models/ResponseJsonStatus';
-import { AddressService } from 'src/app/pages/layout/header/bottom-header/site-option/user-location/service/address.service';
+import { AddressServices } from '../../account/account-address/services/address.service';
+import { RefreshTokenRequestModel } from './../models/refreshTokenRequestModel';
+import { RefreshTokenRespnseModel } from './../models/refreshTokenResponseModel';
+import { UserLoginResponseModel } from './../models/userLoginResponseModel';
 
 @Injectable({
   providedIn: 'root',
@@ -28,14 +30,13 @@ export class AuthService {
     private Http: HttpClient,
     private route: Router,
     private storageService: StorageService,
-    private addressService: AddressService
+    private addressService: AddressServices
   ) {
     this._jwtHelper = new JwtHelperService();
   }
 
   public CurrentUser = new BehaviorSubject<User | null>(null);
 
-  private _tokenExpirationTimer: any;
   private _jwtHelper: JwtHelperService;
 
   public registerUser(
@@ -57,20 +58,34 @@ export class AuthService {
       catchError(this.handleError),
       tap((result) => {
         this.authentication(result.data.user);
-        this.autoLogout(+result.data.user.tokenExpiresIn * 1000);
         this.addressService.SetDefaultAddress(result.data.defaultAddress);
       })
     );
   }
 
-  public signOutUser(): void {
-    this.removeCurrentUser();
-    this.storageService.clearStorage();
-    this.route.navigate(['/']);
-    if (this._tokenExpirationTimer) {
-      clearTimeout(this._tokenExpirationTimer);
+  public refreshToken(refreshTokenMdodel: RefreshTokenRequestModel) {
+    return this.Http.post<ResponseJsonStatus<RefreshTokenRespnseModel>>(
+      'auth/refresh',
+      refreshTokenMdodel
+    );
+  }
+
+  public revokeToken(refreshToken: string): Observable<any> {
+    return this.Http.post('auth/revokeToken', {
+      refreshToken: refreshToken,
+    }).pipe(take(1));
+  }
+
+  public signOutUser() {
+    const user = this.storageService.readUser();
+    if (!user) {
+      return;
     }
-    this._tokenExpirationTimer = null;
+    this.revokeToken(user.refreshToken).subscribe((_) => {
+      this.removeCurrentUser();
+      this.storageService.clearStorage();
+      this.route.navigate(['/']);
+    });
   }
 
   public autoLogin(): void {
@@ -79,13 +94,31 @@ export class AuthService {
       return;
     }
     if (this._jwtHelper.isTokenExpired(user.token!)) {
-      this.signOutUser();
-      return;
+      const user = this.storageService.readUser();
+      if (!user) return this.signOutUser();
+
+      if (!user?.token) return this.signOutUser();
+
+      const refreshTokenReq = new RefreshTokenRequestModel(
+        user.token,
+        user.refreshToken
+      );
+
+      this.refreshToken(refreshTokenReq).subscribe(
+        (response) => {
+          console.log(response);
+          this.updateUserCredential(
+            response.data.accessToken,
+            response.data.refreshToken
+          );
+        },
+        (error) => {
+          console.log(error);
+          this.signOutUser();
+        }
+      );
     }
     this.setCurrentUser(user);
-    const expirationDuration =
-      new Date(user.tokenExpirationData).getTime() - new Date().getTime();
-    this.autoLogout(expirationDuration);
   }
 
   public forgotPassword(forgotModel: ForgotPasswordModel) {
@@ -139,14 +172,19 @@ export class AuthService {
     }
   }
 
-  public updateUserPhoto(photoUrl: string): void {
-    this.updateCurrentUser(photoUrl);
+  updateUserCredential(accessToken: string, refreshToken: string) {
+    const user = this.storageService.readUser();
+    if (user) {
+      user.token = accessToken;
+      user.refreshToken = refreshToken;
+
+      this.CurrentUser.next(user);
+      this.storageService.writeUser(user);
+    }
   }
 
-  private autoLogout(expirationDuration: number) {
-    this._tokenExpirationTimer = setTimeout(() => {
-      this.signOutUser();
-    }, expirationDuration);
+  public updateUserPhoto(photoUrl: string): void {
+    this.updateCurrentUser(photoUrl);
   }
 
   private authentication(result: UserLoginResponseModel) {
@@ -160,6 +198,7 @@ export class AuthService {
       result.photoUrl,
       +result.walletBalance,
       result.token,
+      result.refreshToken,
       expirationDate,
       +result.score,
       result.mobile,

@@ -1,9 +1,9 @@
 import Swal from 'sweetalert2';
 import { AccountAddressEditDialogComponent } from './../account-address-edit/account-address-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AddressService } from 'src/app/pages/layout/header/bottom-header/site-option/user-location/service/address.service';
-import { Address } from './../../../../pages/layout/header/bottom-header/site-option/user-location/address.model';
+import { Address } from '../model/address.model';
 import { Component, Input, OnInit } from '@angular/core';
+import { AddressServices } from '../services/address.service';
 
 @Component({
   selector: 'app-account-address-item',
@@ -12,7 +12,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AccountAddressItemComponent implements OnInit {
   constructor(
-    private addressService: AddressService,
+    private addressService: AddressServices,
     public dialog: MatDialog
   ) {}
 

@@ -1,5 +1,6 @@
-import { Option } from '@shared-module/forms/select/selectOption';
+import { City } from './city';
+import { Province } from './province';
 export interface ProvinceOptionModelResponse {
-  provinceOptions: Option[];
-  cityOptions: Option[];
+  provinces: Province[];
+  cities: City[];
 }

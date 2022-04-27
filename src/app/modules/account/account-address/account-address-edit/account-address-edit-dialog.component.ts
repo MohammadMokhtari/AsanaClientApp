@@ -5,12 +5,12 @@ import {
   AddressCreatedModel,
   AddressUpdateModel,
 } from './../model/addressCreateModel';
-import { Address } from './../../../../pages/layout/header/bottom-header/site-option/user-location/address.model';
-import { AddressService } from 'src/app/pages/layout/header/bottom-header/site-option/user-location/service/address.service';
+import { Address } from '../model/address.model';
 import { Option } from '@shared-module/forms/select/selectOption';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProvinceService } from 'src/app/pages/layout/header/bottom-header/site-option/user-location/service/province.Service';
+import { ProvinceService } from 'src/app/modules/account/account-address/services/province.Service';
+import { AddressServices } from '../services/address.service';
 
 @Component({
   selector: 'app-account-address-edit',
@@ -19,7 +19,7 @@ import { ProvinceService } from 'src/app/pages/layout/header/bottom-header/site-
 })
 export class AccountAddressEditDialogComponent implements OnInit, OnDestroy {
   constructor(
-    private addressService: AddressService,
+    private addressService: AddressServices,
     private provinceService: ProvinceService,
     public dialog: MatDialogRef<AccountAddressEditDialogComponent>
   ) {}
@@ -49,15 +49,15 @@ export class AccountAddressEditDialogComponent implements OnInit, OnDestroy {
         this.isEditMode = true;
 
         this.provinceOptionSelected = new Option(
-          this.address.stateName,
-          this.address.stateName,
+          this.address.provinceName,
+          this.address.provinceName,
           true
         );
         this.cityOptionsSelected = new Option(
           this.address.cityName,
           this.address.cityName,
           true,
-          this.address.stateName
+          this.address.provinceName
         );
 
         this.addressForm.patchValue({
