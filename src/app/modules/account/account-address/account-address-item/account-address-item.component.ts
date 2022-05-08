@@ -1,10 +1,12 @@
-import Swal from 'sweetalert2';
-import { AccountAddressEditDialogComponent } from './../account-address-edit/account-address-edit-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Address } from '../model/address.model';
+import { Store } from '@ngrx/store';
 import { Component, Input, OnInit } from '@angular/core';
-import { AddressServices } from '../services/address.service';
+import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
+import { AppState } from 'src/app/store/app.reducer';
+import { AccountAddressEditDialogComponent } from './../account-address-edit/account-address-edit-dialog.component';
+import { Address } from '../model/address.model';
+import * as fromAddressAction from '../store/address.action';
 @Component({
   selector: 'app-account-address-item',
   templateUrl: './account-address-item.component.html',
@@ -12,8 +14,8 @@ import { AddressServices } from '../services/address.service';
 })
 export class AccountAddressItemComponent implements OnInit {
   constructor(
-    private addressService: AddressServices,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly store: Store<AppState>
   ) {}
 
   @Input() public address: Address;
@@ -21,16 +23,16 @@ export class AccountAddressItemComponent implements OnInit {
   ngOnInit(): void {}
 
   onSelectDefault() {
-    this.addressService.SetDefaultAddress(this.address);
+    this.store.dispatch(
+      fromAddressAction.SetDefaultAddressStart({
+        addressId: this.address.id,
+      })
+    );
   }
 
-  onUpdate() {
-    this.dialog
-      .open(AccountAddressEditDialogComponent)
-      .afterOpened()
-      .subscribe(() => {
-        this.addressService.editStarting.next(this.address);
-      });
+  onEdit() {
+    this.dialog.open(AccountAddressEditDialogComponent);
+    this.store.dispatch(fromAddressAction.StartEdit({ address: this.address }));
   }
 
   onDelete() {
@@ -46,7 +48,9 @@ export class AccountAddressItemComponent implements OnInit {
     });
     swlResut.then((res) => {
       if (res.isConfirmed) {
-        this.addressService.deleteAddress(+this.address.id).subscribe();
+        this.store.dispatch(
+          fromAddressAction.DeleteAddressStart({ addressId: this.address.id })
+        );
       } else if (res.isDenied || res.dismiss) {
         return;
       }

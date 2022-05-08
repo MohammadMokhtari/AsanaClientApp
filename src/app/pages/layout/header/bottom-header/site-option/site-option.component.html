@@ -198,14 +198,24 @@
     </div>
   </li>
 
-  <ng-container *ngIf="isAuthenticated">
+  <ng-container *ngIf="(isAuthenticated | async)">
     <li class="item" (click)="openModal()">
-      <a class="link" data-as-toggle="modal" data-as-target="user_location">
-        {{DefaultLocation?.fullAddress ?? 'شهر خود را انتخاب کنید'}}
-        <span class="icon-menu-svg">
-          <img src="assets/media/images/svg/icon/menu/Marker2.svg">
-        </span>
-      </a>
+      <ng-container *ngIf="(defaultAddress | async) as defaultAddress;else noDefault">
+        <a class="link" data-as-toggle="modal" data-as-target="user_location">
+          {{ defaultAddress.provinceName + ' ' + defaultAddress .cityName + ' ' + defaultAddress.addressLine}}
+          <span class="icon-menu-svg">
+            <img src="assets/media/images/svg/icon/menu/Marker2.svg">
+          </span>
+        </a>
+      </ng-container>
+      <ng-template #noDefault>
+        <a class="link" data-as-toggle="modal" data-as-target="user_location">
+          شهر خود را انتخاب کنید
+          <span class="icon-menu-svg">
+            <img src="assets/media/images/svg/icon/menu/Marker2.svg">
+          </span>
+        </a>
+      </ng-template>
       <app-user-location #userLocation></app-user-location>
     </li>
   </ng-container>

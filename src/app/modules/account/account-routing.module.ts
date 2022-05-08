@@ -7,7 +7,6 @@ import { AccountEditComponent } from './account-edit/account-edit.component';
 import { AccountWalletComponent } from './account-wallet/account-wallet.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { AccountComponent } from './account.component';
-import { AccountAddressComponent } from './account-address/account-address.component';
 import { AccountCommentsComponent } from './account-comments/account-comments.component';
 
 const accountRoute: Routes = [
@@ -20,16 +19,19 @@ const accountRoute: Routes = [
         component: AccountInfoComponent,
       },
       {
+        path: 'address',
+        loadChildren: () =>
+          import('./account-address/account-address.module').then(
+            (m) => m.AccountAddressModule
+          ),
+      },
+      {
         path: 'wallet',
         component: AccountWalletComponent,
       },
       {
         path: 'edit',
         component: AccountEditComponent,
-      },
-      {
-        path: 'address',
-        component: AccountAddressComponent,
       },
       {
         path: 'reset-password',

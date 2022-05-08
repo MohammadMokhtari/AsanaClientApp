@@ -1,9 +1,12 @@
-import Swal from 'sweetalert2';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+
 import { LoginModel } from '../models/loginModel';
-import { Router } from '@angular/router';
+import { AppState } from 'src/app/store/app.reducer';
+import * as fromAuthAction from '../Store/auth-actions';
+import * as fromAuthSelector from '../Store/auth.selector';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +14,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  isLoading = false;
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private readonly store: Store<AppState>) {}
 
   loginForm: FormGroup;
+  isLoading$: Observable<boolean>;
 
   ngOnInit(): void {
+    this.isLoading$ = this.store.select(fromAuthSelector.isLoading);
+
+    this.initialForm();
+  }
+
+  onSubmit() {
+    const loginModel = new LoginModel(
+      this.loginForm.controls.email.value,
+      this.loginForm.controls.password.value
+    );
+
+    this.store.dispatch(fromAuthAction.LoginStart(loginModel));
+  }
+
+  private initialForm() {
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [
@@ -24,24 +42,5 @@ export class LoginComponent implements OnInit {
         Validators.minLength(6),
       ]),
     });
-  }
-
-  onSubmit() {
-    this.isLoading = true;
-    const loginModel = new LoginModel(
-      this.loginForm.controls.email.value,
-      this.loginForm.controls.password.value
-    );
-
-    this.authService.loginUser(loginModel).subscribe(
-      () => {
-        this.isLoading = false;
-        this.router.navigate(['/']);
-      },
-      (error) => {
-        this.isLoading = false;
-        Swal.fire('عملیات با شکست مواجه شد!', error, 'error');
-      }
-    );
   }
 }

@@ -1,4 +1,4 @@
-<div *ngIf="isLoading">
+<div *ngIf="(isLoading$ |async)">
   <app-loading-spinner></app-loading-spinner>
 </div>
 

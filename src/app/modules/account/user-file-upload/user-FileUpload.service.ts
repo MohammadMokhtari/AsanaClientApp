@@ -1,6 +1,3 @@
-import { UploadResponse } from './uploadResponse';
-import { ResponseJsonStatus } from '@shared-module/models/ResponseJsonStatus';
-import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { catchError, tap } from 'rxjs/operators';
 import {
   HttpClient,
@@ -10,6 +7,9 @@ import {
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 
+import { ResponseJsonStatus } from '@shared-module/models/ResponseJsonStatus';
+import { UploadResponse } from './uploadResponse';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 @Injectable()
 export class UserFileUploadService {
   constructor(private http: HttpClient, private authService: AuthService) {}

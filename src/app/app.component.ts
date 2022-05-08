@@ -1,6 +1,8 @@
-import { AuthService } from './modules/auth/services/auth.service';
+import { AppState } from 'src/app/store/app.reducer';
 import { Component, OnInit } from '@angular/core';
-import { AddressServices } from './modules/account/account-address/services/address.service';
+import { Store } from '@ngrx/store';
+
+import * as fromAuthAction from './modules/auth/Store/auth-actions';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +10,9 @@ import { AddressServices } from './modules/account/account-address/services/addr
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private addressService: AddressServices
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.authService.autoLogin();
-    this.addressService.autoSetDefaultAddress();
+    this.store.dispatch(fromAuthAction.AutoLogin());
   }
 }

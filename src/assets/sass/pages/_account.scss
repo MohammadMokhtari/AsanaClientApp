@@ -8,11 +8,6 @@
     border-radius: 15px;
     width: 100%;
     position: relative;
-    img {
-      width: 120px;
-      height: 120px;
-      border-radius: 25px;
-    }
 
     .profile__info {
       padding-right: 15px;
@@ -27,7 +22,6 @@
           color: $text-color;
         }
         small {
-          display: block;
           font-size: 13px;
           font-family: YekanBold;
           margin: 10px 0;

@@ -27,7 +27,7 @@ export class SelectComponent implements OnInit {
 
   @Input() labelKey = 'label';
   @Input() model: Option | null;
-  @Input() public options: Option[];
+  @Input() options: Option[];
 
   @Input() subSelect: SelectComponent | null;
 
@@ -44,7 +44,6 @@ export class SelectComponent implements OnInit {
 
   ngOnInit(): void {
     this.originalOptions = [...this.options];
-
     if (this.model) {
       const option = this.originalOptions.find(
         (op) => op.value === this.model?.value

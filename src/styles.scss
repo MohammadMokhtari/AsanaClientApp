@@ -47,3 +47,17 @@ body::-webkit-scrollbar-thumb {
   background-color: #c9c9c9d8;
   border-radius: 2px;
 }
+
+.snackbar-notification--error {
+  background-color: #f1416df3;
+}
+.snackbar-notification--success {
+  background-color: #50cd88e7;
+  color: #fff;
+}
+.snackbar-notification--info {
+  background-color: #04c8c8ef;
+}
+.snackbar-notification--warning {
+  background-color: #ffc800ee;
+}

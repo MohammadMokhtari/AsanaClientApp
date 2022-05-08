@@ -1,89 +1,89 @@
-import { environment } from './../../../../environments/environment';
+import { first } from 'rxjs/operators';
+import { AppState } from 'src/app/store/app.reducer';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { AccountUpdateRequestModel } from '../models/accountUpdateRequest.model';
+import { ProfileUpdateRequest } from '../models/profileUpdateRequest.model';
 import { Option } from '@shared-module/forms/select/selectOption';
-import { AccountService } from '../services/account.service';
-import { AccountModel } from './../models/account.model';
-import Swal from 'sweetalert2';
+import { ProfileService } from '../services/profile.service';
+import { UserProfile } from '../models/UserProfile';
+import * as fromProfileSelector from '../store/profile.selector';
+import * as fromProfileAction from '../store/profile.action';
 
 @Component({
   selector: 'app-account-edit',
   templateUrl: './account-edit.component.html',
   styleUrls: ['./account-edit.component.scss'],
 })
-export class AccountEditComponent implements OnInit, OnDestroy {
+export class AccountEditComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: AccountService,
-    private route: Router
+    private profileService: ProfileService,
+    private route: Router,
+    private readonly store: Store<AppState>
   ) {
+    this.genderOptions = this.profileService.genderOptions;
     this.initialAccountEditForm();
   }
 
   accountEditForm: FormGroup;
 
-  accountsub: Subscription;
+  genderOptionSelected: Option;
+  public genderOptions: Option[];
 
-  genderOption: Option = new Option('مذکر', 'Male');
-
-  public genderOptions = [
-    new Option('مذکر', 'Male'),
-    new Option('مونث', 'Female'),
-    new Option('نامشخص', 'Unknown'),
-  ];
-
-  public isLoading: boolean = false;
-
-  public accountModel: AccountModel | null;
-
-  public isUnchanged: boolean = false;
+  public isLoading: Observable<boolean>;
+  public profileError: Observable<string | null>;
 
   ngOnInit(): void {
-    this.isLoading = true;
-    this.accountsub = this.accountService.AccountSub.subscribe((data) => {
-      this.accountModel = data;
-      if (data !== null) {
-        this.updateEditForm(data);
-      }
-      this.isLoading = false;
-    });
+    this.isLoading = this.store.select(fromProfileSelector.isLoading);
+
+    this.store
+      .select(fromProfileSelector.userProfile)
+      .subscribe((userProfile) => {
+        if (userProfile !== null) {
+          this.updateEditForm(userProfile);
+          if (userProfile.gender !== 'Unknown') {
+            this.genderOptionSelected = new Option(
+              userProfile.gender === 'Male' ? 'مذکر' : 'مونث',
+              userProfile.gender,
+              true
+            );
+          } else {
+            this.genderOptionSelected = new Option(
+              'نامشخص',
+              userProfile.gender,
+              true
+            );
+          }
+        }
+      });
   }
-  public domainName = environment.domainName;
 
   optionSelect(option: Option) {
-    this.genderOption = option;
+    this.genderOptionSelected = option;
+    this.accountEditForm.markAsDirty();
   }
 
   public onSubmit() {
-    this.isLoading = true;
-    const accountRequestModel: AccountUpdateRequestModel =
-      new AccountUpdateRequestModel(
-        this.accountEditForm.controls.firstName.value,
-        this.accountEditForm.controls.lastName.value,
-        this.accountEditForm.controls.nationalCode.value,
-        this.accountEditForm.controls.creditCardNumber.value,
-        this.accountEditForm.controls.phoneNumber.value,
-        this.genderOption.value
-      );
-    this.accountService.UpdateAccount(accountRequestModel).subscribe(
-      (_) => {
-        this.isLoading = false;
-        this.route.navigate(['account']);
-        Swal.fire('', '<p>حساب کاربری با موفقیت به روز شد</p>', 'success');
-      },
-      (error) => {
-        this.isLoading = false;
-        Swal.fire('عملیات با شکست مواجه شد!', error, 'error');
-      }
+    const profileUpdateRequest: ProfileUpdateRequest = new ProfileUpdateRequest(
+      this.accountEditForm.controls.firstName.value,
+      this.accountEditForm.controls.lastName.value,
+      this.accountEditForm.controls.nationalCode.value,
+      this.accountEditForm.controls.creditCardNumber.value,
+      this.accountEditForm.controls.phoneNumber.value,
+      this.genderOptionSelected.value
+    );
+
+    this.store.dispatch(
+      fromProfileAction.ProfileUpdateStart(profileUpdateRequest)
     );
   }
 
@@ -111,12 +111,7 @@ export class AccountEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateEditForm(accountModel: AccountModel) {
-    const option = this.genderOptions.find((option) => {
-      return option.value === accountModel.gender;
-    });
-
-    option!.isActive = true;
+  private updateEditForm(accountModel: UserProfile) {
     this.accountEditForm.get('firstName')?.setValue(accountModel.firstName);
     this.accountEditForm.get('lastName')?.setValue(accountModel.lastName);
     this.accountEditForm
@@ -126,9 +121,5 @@ export class AccountEditComponent implements OnInit, OnDestroy {
     this.accountEditForm
       .get('nationalCode')
       ?.setValue(accountModel.nationalCode);
-  }
-
-  ngOnDestroy(): void {
-    this.accountsub.unsubscribe();
   }
 }

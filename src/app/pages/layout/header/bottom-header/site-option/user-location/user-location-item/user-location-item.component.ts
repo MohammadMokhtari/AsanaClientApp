@@ -10,16 +10,16 @@ import { Address } from '../../../../../../../modules/account/account-address/mo
 export class UserLocationItemComponent implements OnInit {
   constructor() {}
 
-  @Input() public location: Address;
+  @Input() public address: Address;
 
   @Output() onSelectEvent = new EventEmitter<string>();
 
   ngOnInit(): void {}
 
-  select(locationId: string) {
-    if (this.location.isDefault) {
+  select(addreessId: string) {
+    if (this.address.isDefault) {
       return;
     }
-    this.onSelectEvent.emit(locationId);
+    this.onSelectEvent.emit(addreessId);
   }
 }

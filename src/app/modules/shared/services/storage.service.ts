@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Address } from '../../account/account-address/model/address.model';
-import { User } from './../../auth/models/user';
+import { UserApplication } from '../../auth/models/ApplicationUser';
 
 const USER_KEY = 'userData';
 const DEFAULT_ADDRESS_KEY = 'defaultAddressData';
@@ -16,12 +16,12 @@ export class StorageService {
     localStorage.clear();
   }
 
-  public writeUser(user: User): void {
+  public writeUser(user: UserApplication): void {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
-  public readUser(): User | null {
-    const user: User = JSON.parse(localStorage.getItem(USER_KEY)!);
+  public readUser(): UserApplication | null {
+    const user: UserApplication = JSON.parse(localStorage.getItem(USER_KEY)!);
     return user ?? null;
   }
 

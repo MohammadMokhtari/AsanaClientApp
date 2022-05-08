@@ -1,4 +1,4 @@
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<app-loading-spinner *ngIf="(isLoading |async)"></app-loading-spinner>
 
 <div class="input_layer_addresss pt-3">
   <div class="row acount_title">
@@ -8,7 +8,7 @@
   </div>
 </div>
 
-<ng-template [ngIf]="!isLoading">
+<ng-template [ngIf]="!(isLoading | async)">
 
   <div class="container">
 
@@ -54,7 +54,8 @@
               </div>
 
               <div class="col-md-6">
-                <app-select [options]="genderOptions" labelKey="جنسیت" (optionChanges)="optionSelect($event)">
+                <app-select [options]="genderOptions" [model]="genderOptionSelected" labelKey="جنسیت"
+                  (optionChanges)="optionSelect($event)">
                 </app-select>
               </div>
 
@@ -84,9 +85,9 @@
 
           </div>
           <div class="py-3 d-flex justify-content-end">
-            <button class="base-btn mr-3" type="button" (click)="onCancel()">انصراف</button>
-            <button class="base-btn custom-btn-primary mr-3" [disabled]="!accountEditForm.valid"
-              type="submit">ویرایش</button>
+            <button class="base-btn custom-btn-primary-light mr-3" type="button" (click)="onCancel()">انصراف</button>
+            <button class="base-btn custom-btn-success  mr-3"
+              [disabled]="!(accountEditForm.valid && accountEditForm.dirty)" type="submit">ویرایش</button>
           </div>
         </div>
       </div>

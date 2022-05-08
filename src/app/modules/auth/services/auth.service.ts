@@ -1,6 +1,7 @@
+import { UserCredential } from './../models/ApplicationUser';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, tap, take } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import {
@@ -9,7 +10,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 
-import { User } from './../models/user';
+import { UserApplication } from '../models/ApplicationUser';
 import { LoginModel } from '../models/loginModel';
 import { RegisterModel } from '../models/registerModel';
 import { LoginResponse } from '../models/loginResponse';
@@ -17,7 +18,6 @@ import { StorageService } from '@shared-module/services/storage.service';
 import { ResetPasswordModel } from './../models/resetPasswordModel';
 import { ForgotPasswordModel } from './../models/forgotPasswordModel';
 import { ResponseJsonStatus } from '../../shared/models/ResponseJsonStatus';
-import { AddressServices } from '../../account/account-address/services/address.service';
 import { RefreshTokenRequestModel } from './../models/refreshTokenRequestModel';
 import { RefreshTokenRespnseModel } from './../models/refreshTokenResponseModel';
 import { UserLoginResponseModel } from './../models/userLoginResponseModel';
@@ -29,13 +29,12 @@ export class AuthService {
   constructor(
     private Http: HttpClient,
     private route: Router,
-    private storageService: StorageService,
-    private addressService: AddressServices
+    private storageService: StorageService
   ) {
     this._jwtHelper = new JwtHelperService();
   }
 
-  public CurrentUser = new BehaviorSubject<User | null>(null);
+  public CurrentUser = new BehaviorSubject<UserApplication | null>(null);
 
   private _jwtHelper: JwtHelperService;
 
@@ -54,13 +53,7 @@ export class AuthService {
     return this.Http.post<ResponseJsonStatus<LoginResponse>>(
       `auth/login`,
       loginModel
-    ).pipe(
-      catchError(this.handleError),
-      tap((result) => {
-        this.authentication(result.data.user);
-        this.addressService.SetDefaultAddress(result.data.defaultAddress);
-      })
-    );
+    ).pipe(catchError(this.handleError));
   }
 
   public refreshToken(refreshTokenMdodel: RefreshTokenRequestModel) {
@@ -73,52 +66,11 @@ export class AuthService {
   public revokeToken(refreshToken: string): Observable<any> {
     return this.Http.post('auth/revokeToken', {
       refreshToken: refreshToken,
-    }).pipe(take(1));
-  }
-
-  public signOutUser() {
-    const user = this.storageService.readUser();
-    if (!user) {
-      return;
-    }
-    this.revokeToken(user.refreshToken).subscribe((_) => {
-      this.removeCurrentUser();
-      this.storageService.clearStorage();
-      this.route.navigate(['/']);
     });
   }
 
-  public autoLogin(): void {
-    const user = this.storageService.readUser();
-    if (!user) {
-      return;
-    }
-    if (this._jwtHelper.isTokenExpired(user.token!)) {
-      const user = this.storageService.readUser();
-      if (!user) return this.signOutUser();
-
-      if (!user?.token) return this.signOutUser();
-
-      const refreshTokenReq = new RefreshTokenRequestModel(
-        user.token,
-        user.refreshToken
-      );
-
-      this.refreshToken(refreshTokenReq).subscribe(
-        (response) => {
-          console.log(response);
-          this.updateUserCredential(
-            response.data.accessToken,
-            response.data.refreshToken
-          );
-        },
-        (error) => {
-          console.log(error);
-          this.signOutUser();
-        }
-      );
-    }
-    this.setCurrentUser(user);
+  public validationTokenExpired(accessToken: string): boolean {
+    return this._jwtHelper.isTokenExpired(accessToken);
   }
 
   public forgotPassword(forgotModel: ForgotPasswordModel) {
@@ -144,26 +96,20 @@ export class AuthService {
     });
   }
 
-  public setCurrentUser(user: User): void {
+  public setCurrentUser(user: UserApplication): void {
     this.CurrentUser.next(user);
-  }
-
-  public removeCurrentUser(): void {
-    this.CurrentUser.next(null);
   }
 
   public updateCurrentUser(
     photoUrl: string,
     firstName?: string,
     lastName?: string,
-    fullName?: string,
     mobile?: string
   ) {
     const user = this.storageService.readUser();
     if (user) {
       user.firstName = firstName ?? user.firstName;
       user.lastName = lastName ?? user.lastName;
-      user.fullName = fullName ?? user.fullName;
       user.mobile = mobile ?? user.mobile;
       user.photoUrl = photoUrl;
 
@@ -172,13 +118,11 @@ export class AuthService {
     }
   }
 
-  updateUserCredential(accessToken: string, refreshToken: string) {
+  updateUserCredentialTokens(accessToken: string, refreshToken: string) {
     const user = this.storageService.readUser();
     if (user) {
-      user.token = accessToken;
-      user.refreshToken = refreshToken;
-
-      this.CurrentUser.next(user);
+      user.credential.accessToken = accessToken;
+      user.credential.refreshToken = refreshToken;
       this.storageService.writeUser(user);
     }
   }
@@ -187,30 +131,34 @@ export class AuthService {
     this.updateCurrentUser(photoUrl);
   }
 
-  private authentication(result: UserLoginResponseModel) {
+  public mapToUserApplication(
+    responseModel: UserLoginResponseModel
+  ): UserApplication {
     const expirationDate = new Date(
-      new Date().getTime() + result.tokenExpiresIn * 1000
+      new Date().getTime() + responseModel.tokenExpiresIn * 1000
     );
-    const user = new User(
-      result.userId,
-      result.email,
-      result.userName,
-      result.photoUrl,
-      +result.walletBalance,
-      result.token,
-      result.refreshToken,
-      expirationDate,
-      +result.score,
-      result.mobile,
-      result.firstName,
-      result.lastName,
-      result.fullName
+    const userCredential: UserCredential = new UserCredential(
+      responseModel.token,
+      responseModel.refreshToken,
+      expirationDate
     );
-    this.setCurrentUser(user);
-    this.storageService.writeUser(user);
+    const user = new UserApplication(
+      responseModel.userId,
+      responseModel.email,
+      responseModel.userName,
+      responseModel.photoUrl,
+      responseModel.walletBalance,
+      responseModel.score,
+      responseModel.mobile,
+      responseModel.firstName,
+      responseModel.lastName,
+      responseModel.fullName,
+      userCredential
+    );
+    return user;
   }
 
-  private handleError(errorRes: HttpErrorResponse) {
+  public handleError(errorRes: HttpErrorResponse) {
     let errroMessage = 'خطایی رخ داده لطفا بعدا دوباره تلاش کنید !';
 
     if (!errorRes.error || !errorRes.error.errors) {

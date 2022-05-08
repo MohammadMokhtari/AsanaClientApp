@@ -1,47 +1,44 @@
-<div class="row">
-  <div class="col-md-3"></div>
-  <div class="row p-3">
-    <div class="col-md-4 text-center  user-details-item">
-      <span class="text-muted user-details-item-span"> نام : </span>
-      <span class="badge fs-12 badge-light mt-2">{{Account?.firstName}}</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item">
-      <span class="text-muted user-details-item-span"> نام خانوادگی : </span>
-      <span class="badge fs-12 badge-light mt-2">{{Account?.lastName}}</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item">
-      <span class="text-muted user-details-item-span"> تاریخ ثبت نام : </span>
-      <span class="badge fs-12 badge-light mt-2">{{Account?.createdOn}} گذشته</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item">
-      <span class="text-muted user-details-item-span"> نام کاربری : </span>
-      <span class="badge fs-12 badge-light mt-2">{{Account?.userName}}</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item ">
-      <span class="text-muted user-details-item-span">کد ملی : </span>
-      <span class="badge fs-12 badge-light mt-2">{{Account?.nationalCode}}</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item ">
-      <span class="text-muted user-details-item-span">تلفن همراه : </span>
-      <span class="badge fs-12 badge-light mt-2 dir-ltr">{{Account?.mobile}}</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item ">
-      <span class="text-muted user-details-item-span"> شماره کارت بانکی : </span>
-      <span class="badge fs-12 badge-light mt-2">{{Account?.creditCardNumber}}</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item">
-      <span class="text-muted user-details-item-span"> عضویت در خبرنامه : </span>
-      <span class="badge fs-12 badge-light-succsess mt-2">بله</span>
-    </div>
-    <div class="col-md-4 text-center user-details-item">
-      <span class="text-muted user-details-item-span"> موجودی کیف پول : </span>
-      <span class="badge fs-12 badge-light mt-2">{{Account?.walletBalance}} تومان</span>
-    </div>
-    <div class="col-md-12 text-center user-details-item ">
-      <span class="text-muted user-details-item-span "> آدرس ها : </span>
-      <ng-container *ngFor="let location of Account?.addresses">
-        <span class="badge fs-12 badge-light mt-2 addresses-item">{{location.fullAddress}}</span>
-      </ng-container>
+<ng-container *ngIf="userProfile$ | async as profile">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="row p-3">
+      <div class="col-md-4 text-center  user-details-item">
+        <span class="text-muted user-details-item-span"> نام : </span>
+        <span class="badge fs-12 badge-light mt-2">{{profile.firstName}}</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item">
+        <span class="text-muted user-details-item-span"> نام خانوادگی : </span>
+        <span class="badge fs-12 badge-light mt-2">{{profile.lastName}}</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item">
+        <span class="text-muted user-details-item-span"> تاریخ ثبت نام : </span>
+        <span class="badge fs-12 badge-light mt-2">{{profile.createdOn}} گذشته</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item">
+        <span class="text-muted user-details-item-span"> نام کاربری : </span>
+        <span class="badge fs-12 badge-light mt-2">{{profile.userName}}</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item ">
+        <span class="text-muted user-details-item-span">کد ملی : </span>
+        <span class="badge fs-12 badge-light mt-2">{{profile.nationalCode}}</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item ">
+        <span class="text-muted user-details-item-span">تلفن همراه : </span>
+        <span class="badge fs-12 badge-light mt-2 dir-ltr">{{profile.mobile}}</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item ">
+        <span class="text-muted user-details-item-span"> شماره کارت بانکی : </span>
+        <span class="badge fs-12 badge-light mt-2">{{profile.creditCardNumber}}</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item">
+        <span class="text-muted user-details-item-span"> عضویت در خبرنامه : </span>
+        <span class="badge fs-12 badge-light-succsess mt-2">بله</span>
+      </div>
+      <div class="col-md-4 text-center user-details-item">
+        <span class="text-muted user-details-item-span"> موجودی کیف پول : </span>
+        <span class="badge fs-12 badge-light mt-2">{{profile.walletBalance}} تومان</span>
+      </div>
     </div>
   </div>
-</div>
+
+</ng-container>

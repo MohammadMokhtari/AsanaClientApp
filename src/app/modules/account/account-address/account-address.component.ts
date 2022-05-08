@@ -1,55 +1,45 @@
+import { AppState } from './../../../store/app.reducer';
+import { Store } from '@ngrx/store';
 import { ProvinceService } from 'src/app/modules/account/account-address/services/province.Service';
 import { AccountAddressEditDialogComponent } from './account-address-edit/account-address-edit-dialog.component';
 import { Address } from './model/address.model';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { AddressServices } from './services/address.service';
+
+import * as fromAddressSelector from './store/address.selector';
+import * as fromAddressAction from './store/address.action';
 
 @Component({
   selector: 'app-account-address',
   templateUrl: './account-address.component.html',
   styleUrls: ['./account-address.component.scss'],
 })
-export class AccountAddressComponent implements OnInit, OnDestroy {
+export class AccountAddressComponent implements OnInit {
   constructor(
-    private addressService: AddressServices,
     private provnceService: ProvinceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly store: Store<AppState>
   ) {}
 
-  isLoading: boolean = true;
+  isLoading$: Observable<boolean>;
   provinceSub: Subscription;
-  addressChangeSub: Subscription;
 
-  private addressSub: Subscription;
-
-  address: Address[] = [];
+  address$: Observable<Address[] | null>;
 
   ngOnInit(): void {
+    this.store.dispatch(fromAddressAction.GetAddressesStart());
+
     this.provinceSub = this.provnceService.fetchProvinces().subscribe();
 
-    this.addressSub = this.addressService.getAddresses().subscribe((_) => {
-      this.isLoading = false;
-      this.address = this.addressService.AllAddresses();
-    });
+    this.isLoading$ = this.store.select(fromAddressSelector.isLoading);
 
-    this.addressChangeSub = this.addressService.addressesChanged.subscribe(
-      (data) => {
-        this.address = data;
-      }
-    );
+    this.address$ = this.store.select(fromAddressSelector.Addresses);
   }
 
   openDialog() {
     this.dialog.open(AccountAddressEditDialogComponent, {
       height: '93vh',
     });
-  }
-
-  ngOnDestroy(): void {
-    this.addressSub?.unsubscribe();
-    this.provinceSub?.unsubscribe();
-    this.addressChangeSub?.unsubscribe();
   }
 }

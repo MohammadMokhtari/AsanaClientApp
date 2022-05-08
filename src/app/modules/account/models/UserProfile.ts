@@ -1,6 +1,6 @@
 import { Address } from '../account-address/model/address.model';
 
-export class AccountModel {
+export class UserProfile {
   constructor(
     public firstName: string,
     public lastName: string,
@@ -14,7 +14,6 @@ export class AccountModel {
     public score: number,
     public gender: string,
     public walletBalance: string,
-    public addresses: Address[],
     public createdOn: string,
     public modifiedOn: string
   ) {}

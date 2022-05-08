@@ -1,41 +1,32 @@
+import { AppState } from 'src/app/store/app.reducer';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { UserLocationComponent } from './user-location/user-location.component';
 import { Address } from '../../../../../modules/account/account-address/model/address.model';
-import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { AddressServices } from 'src/app/modules/account/account-address/services/address.service';
+import { Store } from '@ngrx/store';
 
+import * as fromAuthSelector from '../../../../../modules/auth/Store/auth.selector';
+import * as fromAddressSelector from '../../../../../modules/account/account-address/store/address.selector';
 @Component({
   selector: 'app-site-option',
   templateUrl: './site-option.component.html',
   styleUrls: ['./site-option.component.scss'],
 })
 export class SiteOptionComponent implements OnInit, OnDestroy {
-  constructor(
-    private addressService: AddressServices,
-    private authService: AuthService
-  ) {}
+  constructor(private readonly store: Store<AppState>) {}
 
   private userSub: Subscription;
   private locationSub: Subscription;
 
-  public isAuthenticated: boolean = false;
-  public DefaultLocation: Address | null;
+  public isAuthenticated: Observable<boolean>;
+  public defaultAddress: Observable<Address | null>;
 
   @ViewChild('userLocation') modal: UserLocationComponent;
 
   ngOnInit(): void {
-    this.userSub = this.authService.CurrentUser.subscribe((user) => {
-      this.isAuthenticated = !!user;
-      if (this.isAuthenticated) {
-        this.locationSub = this.addressService.defaultAddress.subscribe(
-          (location) => {
-            this.DefaultLocation = location;
-          }
-        );
-      }
-    });
+    this.isAuthenticated = this.store.select(fromAuthSelector.isAuthenticated);
+    this.defaultAddress = this.store.select(fromAddressSelector.DefaultAddress);
   }
 
   openModal() {

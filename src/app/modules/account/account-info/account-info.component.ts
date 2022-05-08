@@ -1,30 +1,25 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AccountModel } from '../models/account.model';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
-import { AccountService } from '../services/account.service';
-import { Subscription } from 'rxjs';
+import { UserProfile } from '../models/UserProfile';
+import { AppState } from 'src/app/store/app.reducer';
+import * as fromProfileSelector from '../store/profile.selector';
 
 @Component({
   selector: 'app-account-info',
   templateUrl: './account-info.component.html',
   styleUrls: ['./account-info.component.scss'],
 })
-export class AccountInfoComponent implements OnInit, OnDestroy {
-  constructor(public accountService: AccountService) {}
+export class AccountInfoComponent implements OnInit {
+  constructor(public readonly store: Store<AppState>) {}
 
-  public isLoading: boolean = true;
-  public account: AccountModel | null;
-  private accountSub: Subscription;
+  public isLoading$: Observable<boolean>;
+
+  public profile$: Observable<UserProfile | null>;
 
   ngOnInit(): void {
-    this.isLoading = !!this.account;
-    this.accountSub = this.accountService.AccountSub.subscribe((data) => {
-      this.account = data;
-      this.isLoading = !!this.account;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.accountSub.unsubscribe();
+    this.isLoading$ = this.store.select(fromProfileSelector.isLoading);
+    this.profile$ = this.store.select(fromProfileSelector.userProfile);
   }
 }

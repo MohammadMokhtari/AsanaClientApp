@@ -13,7 +13,7 @@
       <img src="assets/media/images/svg/icon/menu/Angle-down.svg">
     </span>
     <span class="fs-11">
-      {{user.fullName?.trim() || user.userName}}
+      {{( (user | async)?.fullName?.trim() ||  (user | async)?.userName)}}
     </span>
   </button>
 
@@ -25,14 +25,14 @@
             <img src="assets/media/images/svg/icon/menu/Wallet3.svg">
           </span>
           <span> موجودی شما :</span>
-          <span> {{user.walletBalance}} تومان</span>
+          <span> {{(user | async)?.walletBalance}} تومان</span>
         </div>
         <div class="user_wallet_score">
           <span class="icon-menu-svg">
             <img src="assets/media/images/svg/icon/menu/Star.svg">
           </span>
           <span> امتیاز شما:</span>
-          <span>{{user.score}}</span>
+          <span>{{(user| async)?.score}}</span>
         </div>
       </div>
       <div class="sublayer_menu">
@@ -83,7 +83,7 @@
 
   <div class="logged_in_item">
     <a class="img-layer" routerLink="/account">
-      <img [src]="user.photoUrl" alt="profilePhoto">
+      <img [src]="(user|async)?.photoUrl" alt="profilePhoto">
     </a>
   </div>
 

@@ -1,30 +1,31 @@
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
+import { Store } from '@ngrx/store';
+
 import {
   AddressCreatedModel,
   AddressUpdateModel,
 } from './../model/addressCreateModel';
+import { AppState } from 'src/app/store/app.reducer';
 import { Address } from '../model/address.model';
 import { Option } from '@shared-module/forms/select/selectOption';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProvinceService } from 'src/app/modules/account/account-address/services/province.Service';
-import { AddressServices } from '../services/address.service';
+import * as fromAddressAction from '../store/address.action';
+import * as fromAddressSelector from '../store/address.selector';
 
 @Component({
   selector: 'app-account-address-edit',
   templateUrl: './account-address-edit-dialog.component.html',
   styleUrls: ['./account-address-edit-dialog.component.scss'],
 })
-export class AccountAddressEditDialogComponent implements OnInit, OnDestroy {
+export class AccountAddressEditDialogComponent implements OnInit {
   constructor(
-    private addressService: AddressServices,
     private provinceService: ProvinceService,
+    private readonly store: Store<AppState>,
     public dialog: MatDialogRef<AccountAddressEditDialogComponent>
   ) {}
 
-  private EditStartingSub: Subscription;
   private address: Address;
 
   public addressForm: FormGroup;
@@ -40,11 +41,15 @@ export class AccountAddressEditDialogComponent implements OnInit, OnDestroy {
     this.provinceOptions = this.provinceService.getProvinceOption();
     this.CityOptions = this.provinceService.getCitieOption();
 
+    this.dialog.afterClosed().subscribe(() => {
+      this.store.dispatch(fromAddressAction.StopEdit());
+    });
+
     this.initialAddressForm();
 
-    this.EditStartingSub = this.addressService.editStarting.subscribe(
-      (address) => {
-        if (address) this.address = address;
+    this.store.select(fromAddressSelector.EditAddress).subscribe((address) => {
+      if (address) {
+        this.address = address;
 
         this.isEditMode = true;
 
@@ -73,16 +78,22 @@ export class AccountAddressEditDialogComponent implements OnInit, OnDestroy {
           },
         });
       }
-    );
+      return;
+    });
   }
 
   onSubmit() {
     if (!this.provinceOptionSelected && !this.cityOptionsSelected) return;
+    this.dialog.close();
 
     if (this.isEditMode) return this.submitEditForm();
     else return this.submitCreateForm();
   }
 
+  public OnCancelled() {
+    this.store.dispatch(fromAddressAction.StopEdit());
+    this.dialog.close();
+  }
   public optionProvinceSelect(optionProvince: Option) {
     this.provinceOptionSelected = optionProvince;
   }
@@ -139,84 +150,46 @@ export class AccountAddressEditDialogComponent implements OnInit, OnDestroy {
 
   private submitEditForm(): void {
     const address: AddressUpdateModel = new AddressUpdateModel(
-      +this.address.id,
-      this.addressForm.controls.addressLine.value,
+      this.address.id,
+      this.addressForm.controls.addressLine.value.trimEnd(),
       this.addressForm.controls.postalCode.value,
       this.addressForm.controls.numberPlate.value,
       this.addressForm.controls.unitNumber.value,
       this.cityOptionsSelected!.value,
       this.provinceOptionSelected!.value,
-      this.addressForm.get(['recipentData', 'recipientFirstName'])?.value,
-      this.addressForm.get(['recipentData', 'recipientLastName'])?.value,
+      this.addressForm
+        .get(['recipentData', 'recipientFirstName'])
+        ?.value.trimEnd(),
+      this.addressForm
+        .get(['recipentData', 'recipientLastName'])
+        ?.value.trimEnd(),
       this.addressForm.get(['recipentData', 'recipientNationalCode'])?.value,
       this.addressForm.get(['recipentData', 'recipientPhoneNumber'])?.value
     );
-    this.addressService.updateAddress(address).subscribe(
-      (_) => {
-        Swal.fire({
-          title: 'ویرایش آدرس',
-          html: '<h6>آدرس  با موفقیت ویرایش شد</h6>',
-          icon: 'success',
-          showCancelButton: false,
-          confirmButtonColor: '#009ef7',
-          confirmButtonText: 'باشه',
-        });
-        this.dialog.close();
-      },
-      (error) => {
-        Swal.fire({
-          title: 'ویرایش آدرس',
-          html: `<h6>عملیات با شکست مواجعه شد لطفا بعدا دوباره تلاش کنید </h6><br><span>${error}</span>`,
-          icon: 'error',
-          showCancelButton: false,
-          confirmButtonColor: '#f1416c',
-          confirmButtonText: 'باشه',
-        });
-        this.dialog.close();
-      }
+    this.store.dispatch(
+      fromAddressAction.UpdateAddressStart({ address: address })
     );
   }
 
   private submitCreateForm() {
     const address: AddressCreatedModel = new AddressCreatedModel(
-      this.addressForm.controls.addressLine.value,
+      this.addressForm.controls.addressLine.value.trimEnd(),
       this.addressForm.controls.postalCode.value,
       this.addressForm.controls.numberPlate.value,
       this.addressForm.controls.unitNumber.value,
       this.cityOptionsSelected!.value ?? '',
       this.provinceOptionSelected!.value ?? '',
-      this.addressForm.get(['recipentData', 'recipientFirstName'])?.value,
-      this.addressForm.get(['recipentData', 'recipientLastName'])?.value,
+      this.addressForm
+        .get(['recipentData', 'recipientFirstName'])
+        ?.value.trimEnd(),
+      this.addressForm
+        .get(['recipentData', 'recipientLastName'])
+        ?.value.trimEnd(),
       this.addressForm.get(['recipentData', 'recipientNationalCode'])?.value,
       this.addressForm.get(['recipentData', 'recipientPhoneNumber'])?.value
     );
-    this.addressService.createAddress(address).subscribe(
-      (_) => {
-        Swal.fire({
-          title: 'ثبت آدرس',
-          html: '<h6>آدرس جدید با موفقیت ثبت شد</h6>',
-          icon: 'success',
-          showCancelButton: false,
-          confirmButtonColor: '#009ef7',
-          confirmButtonText: 'باشه',
-        });
-        this.dialog.close();
-      },
-      (error) => {
-        Swal.fire({
-          title: 'ثبت آدرس',
-          html: `<h6>عملیات با شکست مواجعه شد لطفا بعدا دوباره تلاش کنید </h6><pan></pan>`,
-          icon: 'error',
-          showCancelButton: false,
-          confirmButtonColor: '#f1416c',
-          confirmButtonText: 'باشه',
-        });
-        this.dialog.close();
-      }
+    this.store.dispatch(
+      fromAddressAction.CreateAddressStart({ addressCreateModel: address })
     );
-  }
-
-  ngOnDestroy(): void {
-    this.EditStartingSub?.unsubscribe();
   }
 }

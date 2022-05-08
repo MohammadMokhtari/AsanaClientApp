@@ -1,10 +1,3 @@
-import { RefreshTokenRespnseModel } from './../modules/auth/models/refreshTokenResponseModel';
-import { ResponseJsonStatus } from './../modules/shared/models/ResponseJsonStatus';
-import { RefreshTokenRequestModel } from './../modules/auth/models/refreshTokenRequestModel';
-import { StorageService } from '@shared-module/services/storage.service';
-import { Injectable } from '@angular/core';
-import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { catchError, switchMap } from 'rxjs/operators';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -12,13 +5,25 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { catchError, switchMap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { RefreshTokenRespnseModel } from './../modules/auth/models/refreshTokenResponseModel';
+import { ResponseJsonStatus } from './../modules/shared/models/ResponseJsonStatus';
+import { RefreshTokenRequestModel } from './../modules/auth/models/refreshTokenRequestModel';
+import { StorageService } from '@shared-module/services/storage.service';
+import * as fromAuthAction from '../modules/auth/Store/auth-actions';
+import * as fromReminderAction from '../store/reminder/remnder.actions';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private readonly store: Store
   ) {}
 
   intercept(
@@ -27,9 +32,18 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if ([401, 403].includes(error.status)) {
+        if ([401].includes(error.status)) {
           return this.handleRefreshToken(req, next);
         } else {
+          this.store.dispatch(
+            fromReminderAction.Reminder({
+              message: 'ارتباط با سرور قطع شده است',
+              reminderType: 'snackbar-notification--error',
+              horizontalPosition: 'center',
+              reminderDuration: 5000,
+              verticalPosition: 'top',
+            })
+          );
           return throwError(error);
         }
       })
@@ -47,30 +61,33 @@ export class ErrorInterceptor implements HttpInterceptor {
   private handleRefreshToken(req: HttpRequest<any>, next: HttpHandler) {
     const user = this.storageService.readUser();
     if (!user) {
-      this.authService.signOutUser();
+      this.store.dispatch(fromAuthAction.Reset());
       throw Error('TokenExpired!');
     }
-    if (!user?.token) {
-      this.authService.signOutUser();
+    if (!user?.credential.accessToken) {
+      this.store.dispatch(fromAuthAction.Reset());
       throw Error('TokenExpired!');
     }
 
     const refreshTokenReq = new RefreshTokenRequestModel(
-      user.token,
-      user.refreshToken
+      user.credential.accessToken,
+      user.credential.refreshToken
     );
+
     return this.authService.refreshToken(refreshTokenReq).pipe(
       switchMap((response: ResponseJsonStatus<RefreshTokenRespnseModel>) => {
-        this.authService.updateUserCredential(
+        this.authService.updateUserCredentialTokens(
           response.data.accessToken,
           response.data.refreshToken
         );
+
+        this.store.dispatch(fromAuthAction.RefreshTokenSuccess());
+
         return next.handle(
           this.addAccessTokenToHeader(req, response.data.accessToken)
         );
       }),
       catchError((error) => {
-        this.authService.signOutUser();
         return throwError(error);
       })
     );

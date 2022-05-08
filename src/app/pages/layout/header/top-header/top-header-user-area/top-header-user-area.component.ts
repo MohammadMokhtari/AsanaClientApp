@@ -1,29 +1,24 @@
-import { User } from './../../../../../modules/auth/models/user';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+
+import { AppState } from './../../../../../store/app.reducer';
+import { UserApplication } from '../../../../../modules/auth/models/ApplicationUser';
+import * as fromAuthSelector from '../../../../../modules/auth/Store/auth.selector';
 
 @Component({
   selector: 'app-top-header-user-area',
   templateUrl: './top-header-user-area.component.html',
   styleUrls: ['./top-header-user-area.component.scss'],
 })
-export class TopHeaderUserAreaComponent implements OnInit, OnDestroy {
-  private userSub: Subscription;
+export class TopHeaderUserAreaComponent implements OnInit {
+  isAuthenticated: Observable<boolean>;
+  user: Observable<UserApplication | null>;
 
-  isAuthenticated: boolean = false;
-  user: User | null;
-
-  constructor(private authService: AuthService) {}
+  constructor(private readonly store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.userSub = this.authService.CurrentUser.subscribe((user) => {
-      this.isAuthenticated = !!user;
-      this.user = user;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe();
+    this.isAuthenticated = this.store.select(fromAuthSelector.isAuthenticated);
+    this.user = this.store.select(fromAuthSelector.getUser);
   }
 }

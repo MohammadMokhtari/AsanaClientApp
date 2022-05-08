@@ -1,10 +1,12 @@
+import { AppState } from 'src/app/store/app.reducer';
+import { Store } from '@ngrx/store';
 import { routeAnimation } from './../../animations/routeAnimation';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { User } from './../auth/models/user';
-import { AuthService } from './../auth/services/auth.service';
-import { AccountService } from './services/account.service';
+import { UserApplication } from '../auth/models/ApplicationUser';
+import * as fromAuthSelector from '../auth/Store/auth.selector';
+import * as fromProfileAction from './store/profile.action';
 
 @Component({
   selector: 'app-account',
@@ -13,25 +15,14 @@ import { AccountService } from './services/account.service';
   animations: [routeAnimation],
 })
 export class AccountComponent implements OnInit, OnDestroy {
-  constructor(
-    private accountService: AccountService,
-    private authService: AuthService
-  ) {}
+  constructor(private readonly store: Store<AppState>) {}
 
-  private userSub: Subscription;
-  private accountSub: Subscription;
-
-  public User: User;
+  public User$: Observable<UserApplication | null>;
 
   ngOnInit(): void {
-    this.accountSub = this.accountService.GetUserInfo().subscribe();
-    this.userSub = this.authService.CurrentUser.subscribe((user) => {
-      this.User = user!;
-    });
+    this.store.dispatch(fromProfileAction.ProfileInfoStart());
+    this.User$ = this.store.select(fromAuthSelector.getUser);
   }
 
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-    this.accountSub.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

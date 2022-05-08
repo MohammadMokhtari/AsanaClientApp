@@ -7,11 +7,9 @@ export class UserLoginResponseModel {
   lastName: string;
   fullName: string;
   photoUrl: string;
-  walletBalance: string;
+  walletBalance: number;
   mobile: string;
-  score: string;
+  score: number;
   email: string;
   tokenExpiresIn: number;
-  createdOn: number;
-  modifiedOn: number;
 }

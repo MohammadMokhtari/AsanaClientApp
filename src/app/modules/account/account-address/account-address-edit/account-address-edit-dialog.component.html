@@ -161,6 +161,9 @@
         </div>
         <div class="row">
           <div class="d-flex justify-content-end w-100 px-1">
+            <button class="base-btn custom-btn-primary-light mr-3" type="button" (click)="OnCancelled()">
+              انصراف
+            </button>
             <button class="base-btn custom-btn-success mr-3" type="submit" [disabled]="!addressForm.valid">
               {{isEditMode ? 'ویرایش':'افزودن'}}
             </button>

@@ -1,7 +1,7 @@
-<li (click)="select(location.id)">
+<li (click)="select(address.id)">
   <label class="radio_container">
-    <input type="radio" name="location" [checked]="location.isDefault">
-    {{location.fullAddress}}
+    <input type="radio" name="location" [checked]="address.isDefault">
+    {{address.fullAddress}}
     <span class="checkmark"></span>
   </label>
 </li>

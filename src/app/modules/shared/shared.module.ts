@@ -1,3 +1,6 @@
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,6 +13,13 @@ import { SelectComponent } from './forms/select/select.component';
 import { OptionComponent } from './forms/option/option.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InnerLoadingSpinnerComponent } from './inner-loading-spinner/inner-loading-spinner.component';
+import { ReminderComponent } from './reminder/reminder.component';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -20,8 +30,21 @@ import { InnerLoadingSpinnerComponent } from './inner-loading-spinner/inner-load
     SelectComponent,
     OptionComponent,
     InnerLoadingSpinnerComponent,
+    ReminderComponent,
   ],
-  imports: [CommonModule, AngularSvgIconModule.forRoot(), ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    AngularSvgIconModule.forRoot(),
+    ReactiveFormsModule,
+    MatCardModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatListModule,
+    MatDialogModule,
+  ],
   exports: [
     DropDownComponent,
     AngularSvgIconModule,
@@ -31,6 +54,15 @@ import { InnerLoadingSpinnerComponent } from './inner-loading-spinner/inner-load
     SelectComponent,
     OptionComponent,
     InnerLoadingSpinnerComponent,
+    NgxSkeletonLoaderModule,
+    MatCardModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatListModule,
+    MatDialogModule,
   ],
   providers: [],
 })

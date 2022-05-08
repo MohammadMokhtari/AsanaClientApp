@@ -5,17 +5,17 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AccountModel } from '../models/account.model';
-import { AccountService } from '../services/account.service';
+import { UserProfile } from '../models/UserProfile';
+import { AccountService } from '../services/profile.service';
 
 @Injectable()
-export class AccountResolver implements Resolve<AccountModel | null> {
+export class AccountResolver implements Resolve<UserProfile | null> {
   constructor(private accountService: AccountService) {}
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): AccountModel | Observable<AccountModel | null> | Promise<AccountModel> {
-    let account: AccountModel | null;
+  ): UserProfile | Observable<UserProfile | null> | Promise<UserProfile> {
+    let account: UserProfile | null;
     return this.accountService.AccountSub;
   }
 }
