@@ -7,10 +7,13 @@
   
 Asana open-source eCommerce ShoppingCart base on Angular Framework
 
+ 
+#### 🔧 IN PROGRESS...
+  
 <h3 align="center">screenshot</h3>
 
   <p align="center">
-    <img src="https://docs.google.com/uc?id=1hpMgc7zsPqngAnmbHmU3DYmOlM5IE3vf" alt="Logo" >
+    <img src="https://docs.google.com/uc?id=1hpMgc7zsPqngAnmbHmU3DYmOlM5IE3vf">
   </p>
   
 </div>
@@ -21,17 +24,10 @@ Asana open-source eCommerce ShoppingCart base on Angular Framework
 * [Rxjs](https://rxjs.dev/)
 * [Sass](https://sass-lang.com/)
 * [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Webpack](https://webpack.js.org/)
-* [Postcss](https://postcss.org/)
-
 
 
 <!-- GETTING STARTED -->
 ### ⚡️ Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 * npm
@@ -53,6 +49,13 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    ng serve
    ```
+### Ngrx
+
+1. switch to ngrx branch
+   ```sh
+    git checkout ngrx
+   ```
+
 
 ## Development server
 
@@ -75,7 +78,3 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Contact
 
 Your Name - [@twitter_mohammad_mkhDev](https://twitter.com/mohammad_mkhDev) - dev.mohammadmokhtari@outlook.com
-
-
-
-
