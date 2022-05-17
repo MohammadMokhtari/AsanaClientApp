@@ -1,3 +1,4 @@
+import { UserProfileComponent } from './header/top-header/top-header-user-area/user-profile/user-profile.component';
 import { backdropDirective } from './directives/backdrop.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,7 +19,6 @@ import { SubMenuComponent } from './header/bottom-header/site-menu/site-menu-ite
 import { MegaMenuComponent } from './header/bottom-header/site-menu/mega-menu/mega-menu.component';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { MegaMenuItemComponent } from './header/bottom-header/site-menu/mega-menu/mega-menu-item/mega-menu-item.component';
-import { ProfileComponent } from './header/top-header/top-header-user-area/profile/profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { TopFooterComponent } from './footer/top-footer/top-footer.component';
 import { BottomFooterComponent } from './footer/bottom-footer/bottom-footer.component';
@@ -34,6 +34,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MegaSubMenuItemComponent } from './header/bottom-header/site-menu/mega-menu/mega-menu-item/mega-sub-menu-item/mega-sub-menu-item..cmponent';
 @NgModule({
   declarations: [
+    UserProfileComponent,
     LayoutComponent,
     HeaderComponent,
     TopHeaderComponent,
@@ -48,7 +49,7 @@ import { MegaSubMenuItemComponent } from './header/bottom-header/site-menu/mega-
     MegaSubMenuItemComponent,
     backdropDirective,
     MegaMenuItemComponent,
-    ProfileComponent,
+    UserProfileComponent,
     FooterComponent,
     TopFooterComponent,
     BottomFooterComponent,
@@ -60,6 +61,7 @@ import { MegaSubMenuItemComponent } from './header/bottom-header/site-menu/mega-
     UserLocationComponent,
     UserLocationItemComponent,
     HomeComponent,
+    UserProfileComponent,
   ],
   imports: [
     CommonModule,

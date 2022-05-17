@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Address } from '../../profile/profile-address/model/address.model';
 
-import { Address } from '../../account/account-address/model/address.model';
 import { User } from './../../auth/models/user';
 
 const USER_KEY = 'userData';

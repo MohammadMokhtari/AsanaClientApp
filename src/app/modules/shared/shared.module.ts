@@ -10,7 +10,14 @@ import { SelectComponent } from './forms/select/select.component';
 import { OptionComponent } from './forms/option/option.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InnerLoadingSpinnerComponent } from './inner-loading-spinner/inner-loading-spinner.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
 @NgModule({
   declarations: [
     DropDownComponent,
@@ -21,7 +28,19 @@ import { InnerLoadingSpinnerComponent } from './inner-loading-spinner/inner-load
     OptionComponent,
     InnerLoadingSpinnerComponent,
   ],
-  imports: [CommonModule, AngularSvgIconModule.forRoot(), ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    AngularSvgIconModule.forRoot(),
+    ReactiveFormsModule,
+    MatCardModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatListModule,
+    MatDialogModule,
+  ],
   exports: [
     DropDownComponent,
     AngularSvgIconModule,
@@ -31,6 +50,14 @@ import { InnerLoadingSpinnerComponent } from './inner-loading-spinner/inner-load
     SelectComponent,
     OptionComponent,
     InnerLoadingSpinnerComponent,
+    MatCardModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatListModule,
+    MatDialogModule,
   ],
   providers: [],
 })

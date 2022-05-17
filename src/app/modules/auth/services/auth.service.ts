@@ -17,10 +17,10 @@ import { StorageService } from '@shared-module/services/storage.service';
 import { ResetPasswordModel } from './../models/resetPasswordModel';
 import { ForgotPasswordModel } from './../models/forgotPasswordModel';
 import { ResponseJsonStatus } from '../../shared/models/ResponseJsonStatus';
-import { AddressServices } from '../../account/account-address/services/address.service';
 import { RefreshTokenRequestModel } from './../models/refreshTokenRequestModel';
 import { RefreshTokenRespnseModel } from './../models/refreshTokenResponseModel';
 import { UserLoginResponseModel } from './../models/userLoginResponseModel';
+import { AddressServices } from '../../profile/profile-address/services/address.service';
 
 @Injectable({
   providedIn: 'root',

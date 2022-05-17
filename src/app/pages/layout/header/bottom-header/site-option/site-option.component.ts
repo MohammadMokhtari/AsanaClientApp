@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { UserLocationComponent } from './user-location/user-location.component';
-import { Address } from '../../../../../modules/account/account-address/model/address.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { AddressServices } from 'src/app/modules/account/account-address/services/address.service';
+import { AddressServices } from 'src/app/modules/profile/profile-address/services/address.service';
+import { Address } from 'src/app/modules/profile/profile-address/model/address.model';
 
 @Component({
   selector: 'app-site-option',
@@ -30,8 +30,8 @@ export class SiteOptionComponent implements OnInit, OnDestroy {
       this.isAuthenticated = !!user;
       if (this.isAuthenticated) {
         this.locationSub = this.addressService.defaultAddress.subscribe(
-          (location) => {
-            this.DefaultLocation = location;
+          (address) => {
+            this.DefaultLocation = address;
           }
         );
       }

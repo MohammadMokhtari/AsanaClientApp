@@ -1,0 +1,16 @@
+<app-inner-loading-spinner *ngIf="!isLoading"></app-inner-loading-spinner>
+
+<ng-container *ngIf="isLoading">
+  <div class="input_layer_addresss pt-3">
+
+    <div class="row acount_title">
+      <div class="acount_title col-md-12 fs-13">
+        <span class="text-muted mx-2 font-weight-bold"> اطلاعات شخصی</span>
+      </div>
+    </div>
+
+    <div>
+      <app-profile-detail [Account]="account"></app-profile-detail>
+    </div>
+  </div>
+</ng-container>

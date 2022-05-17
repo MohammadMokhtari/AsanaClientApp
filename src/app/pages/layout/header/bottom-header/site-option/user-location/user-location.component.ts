@@ -7,10 +7,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 
-import { Address } from '../../../../../../modules/account/account-address/model/address.model';
 import { ModalComponent } from '@shared-module/modal/modal.component';
 import { ModalConfig } from '@shared-module/modal/modalConfig';
-import { AddressServices } from 'src/app/modules/account/account-address/services/address.service';
+import { AddressServices } from 'src/app/modules/profile/profile-address/services/address.service';
+import { Address } from 'src/app/modules/profile/profile-address/model/address.model';
 
 @Component({
   selector: 'app-user-location',

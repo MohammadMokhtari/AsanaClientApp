@@ -14,10 +14,10 @@ const pageRoutes: Routes = [
         component: HomeComponent,
       },
       {
-        path: 'account',
+        path: 'profile',
         loadChildren: () =>
-          import('../modules/account/account.module').then(
-            (m) => m.AccountModule
+          import('../modules/profile/profile.module').then(
+            (m) => m.ProfileModule
           ),
       },
     ],
