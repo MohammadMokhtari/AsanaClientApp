@@ -1,10 +1,10 @@
 import { MainCategories } from './../Models/mainCategories';
 import { shareReplay, map } from 'rxjs/operators';
 import { ResponseJsonStatus } from '@shared-module/models/ResponseJsonStatus';
-import { CategoriesNavigationResponseModel } from '../header/bottom-header/site-menu/mega-menu/models/categoriesNavigationResponseModel';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CategoriesNavigationResponseModel } from '../components/header/bottom-header/site-menu/mega-menu/models/categoriesNavigationResponseModel';
 
 @Injectable({
   providedIn: 'root',

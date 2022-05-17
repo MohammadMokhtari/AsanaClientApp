@@ -27,8 +27,9 @@ export class ModalComponent implements OnInit {
     return new Promise<boolean>((resolve) => {
       this.modalRef = this.modalService.open(this.modalContent, {
         centered: true,
+        backdropClass: 'modal__backdrop',
       });
-      this.modalRef.result.then(resolve, resolve);
+      // this.modalRef.result.then(resolve, resolve);
     });
   }
 

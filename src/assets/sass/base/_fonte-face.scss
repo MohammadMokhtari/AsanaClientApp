@@ -4,19 +4,10 @@
   font-weight: normal;
   font-display: auto;
   src: url("../../media/fonts/IRANsSansWeb/eot/IRANSansWeb.eot");
-  src: url("../../media/fonts/IRANsSansWeb/eot/IRANSansWeb.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-8 */ url("../../media/fonts/IRANsSansWeb/woff2/IRANSansWeb.woff2")
-      format("woff2"),
-    /* FF39+,Chrome36+, Opera24+*/
-      url("../../media/fonts/IRANsSansWeb/woff/IRANSansWeb.woff") format("woff"),
-    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-      url("../../media/fonts/IRANsSansWeb/ttf/IRANSansWeb.ttf")
-      format("truetype");
 }
 @font-face {
   font-family: YekanBold;
-  font-weight: 100s;
+  font-weight: 100;
   src: url("../../media/fonts/IRANYekanBold/fonts/IRANYekanBold.eot");
   src: url("../../media/fonts/IRANYekanBold/fonts/IRANYekanBold.eot?#iefix")
       format("embedded-opentype"),

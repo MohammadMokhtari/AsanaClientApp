@@ -1,7 +1,12 @@
 <app-header></app-header>
 
 <main>
-  <section class="site_section" [@routAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
+  <section [@routAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
     <router-outlet #outlet="outlet"></router-outlet>
   </section>
 </main>
+
+<section class="card shadow-box rounded-7 mt-3">
+  <app-home-feature></app-home-feature>
+  <app-footer></app-footer>
+</section>

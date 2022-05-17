@@ -1,0 +1,35 @@
+.title {
+  font-size: 0.9375rem;
+  color: #000;
+  font-weight: 600;
+  float: right;
+  padding: 0px;
+  position: relative;
+  right: 0px;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: -36px;
+    border-radius: 50px;
+    width: 30px;
+    height: 4px;
+    background-color: #2196f3;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: -45px;
+    border-radius: 50px;
+    width: 40px;
+    height: 4px;
+    background-color: #2196f3;
+  }
+}
+
+.caption {
+  text-align: center;
+  padding: 0 20px;
+  margin: 0 15px;
+}

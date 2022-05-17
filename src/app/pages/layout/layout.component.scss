@@ -1,0 +1,16 @@
+@import "bootstrap-v4-rtl/scss/functions";
+@import "bootstrap-v4-rtl/scss/mixins";
+@import "bootstrap-v4-rtl/scss/variables";
+
+section {
+  padding: 10px 0 0 0;
+  position: relative;
+  top: 85px;
+  @include media-breakpoint-up(lg) {
+    top: 125px;
+  }
+}
+
+main {
+  min-height: 80vh;
+}

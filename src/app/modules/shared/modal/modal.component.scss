@@ -2,20 +2,9 @@
 @import "bootstrap-v4-rtl/scss/mixins";
 @import "bootstrap-v4-rtl/scss/variables";
 
-.re-modal-wrapper {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.modal__backdrop {
   background-color: rgba(0, 0, 0, 0.411);
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  z-index: 900;
-  opacity: 1;
-  transform: scale(1.1, 1.1);
-  // @include transition(all 0.2s ease-in-out);
+  z-index: 800;
 }
 
 .re-modal {
@@ -25,6 +14,7 @@
   position: relative;
   background-color: #fff;
   border-radius: 5px;
+  z-index: 900;
   &-header {
     width: 100%;
     padding: 10px 15px;

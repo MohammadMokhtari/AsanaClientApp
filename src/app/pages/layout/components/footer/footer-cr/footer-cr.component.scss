@@ -1,0 +1,16 @@
+footer.footer_cr {
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+.copyright {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  p {
+    font-size: 11px;
+    margin: 0px;
+    text-align-last: center;
+  }
+}
